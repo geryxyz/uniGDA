@@ -21,6 +21,12 @@ if __name__ == '__main__':
         help='name of the input Gremlin traversal source',
         required=True)
     clap.add_argument(
+        '-il', '--input-label',
+        dest='input_label',
+        action='store',
+        help='unique label of the input',
+        required=False)
+    clap.add_argument(
         '-os', '--output-server',
         dest='output_server',
         action='store',
@@ -34,17 +40,22 @@ if __name__ == '__main__':
         required=True)
     clap.add_argument(
         "-l", "--log",
+        default='INFO',
         dest="log_level",
         choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
-        help="Set the logging level")
+        help="Set the logging level",
+        required=False)
     clap.add_argument(
         '-k', '--keep',
+        default=True,
         dest='delete',
         action='store_false',
-        help='do not delete existing graph')
+        help='do not delete existing graph',
+        required=False)
 
     clargs = clap.parse_args()
+
     logging.basicConfig(level=logging.getLevelName(clargs.log_level))
 
     uploader = input.GremlinUploader(clargs.output_server, clargs.output_source)
-    uploader.from_gremlin(clargs.input_server, clargs.input_source, drop_graph=clargs.delete)
+    uploader.from_gremlin(clargs.input_server, clargs.input_source, drop_graph=clargs.delete, label=clargs.input_label)
