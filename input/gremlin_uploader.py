@@ -26,9 +26,9 @@ class GremlinUploader(object):
             self.output_graph.E(new_edge).property(prop, value).toList()
         logging.debug("added properties: %s" % self.output_graph.E(new_edge).properties().toList())
 
-    def _add_node(self, id, props, source_label):
+    def _add_node(self, id, props, node_label, source_label):
         logging.debug("processing node: %s\nwith data: %s" % (id, props))
-        new_node = self.output_graph.addV('node_link_node').next()
+        new_node = self.output_graph.addV(node_label).next()
         self.output_graph.V(new_node).property('original_id', id).toList()
         self.output_graph.V(new_node).property('source_name', source_label).toList()
         for prop, value in props.items():
@@ -57,10 +57,10 @@ class GremlinUploader(object):
         self._drop_if(drop_graph)
 
         for id, props in input_graph.nodes(data=True):
-            self._add_node(id, props, source_label)
+            self._add_node(id, props, 'node', source_label)
 
         for out_id, in_id, props in input_graph.edges(data=True):
-            self._add_edge(in_id, out_id, props, -1, "node_link", source_label)
+            self._add_edge(in_id, out_id, props, -1, 'edge', source_label)
 
     def from_gremlin(self, server_url, traversal_source, drop_graph=True, label=None):
         source_label = server_url
@@ -74,7 +74,7 @@ class GremlinUploader(object):
         for node in input_graph.V().toList():
             id = node.id
             props = {prop: value[0].value for prop, value in input_graph.V(node).propertyMap().next().items()}
-            self._add_node(id, props, source_label)
+            self._add_node(id, props, node.label, source_label)
             add_node_count += 1
 
         add_edge_count = 0
