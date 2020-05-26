@@ -1,6 +1,6 @@
 # python3 gremlin2gremlin.py -i "samples\totinfo.dynamic.json" -os "ws://localhost:8182/gremlin" -ots "g"
 
-import input
+import graph_input
 import argparse
 
 if __name__ == '__main__':
@@ -25,11 +25,6 @@ if __name__ == '__main__':
         help='name of the output Gremlin traversal source',
         required=True)
     clap.add_argument(
-        '-q', '--quiet',
-        dest='verbose',
-        action='store_false',
-        help='do not print messages except fatal errors')
-    clap.add_argument(
         '-k', '--keep',
         dest='delete',
         action='store_false',
@@ -37,6 +32,6 @@ if __name__ == '__main__':
 
     clargs = clap.parse_args()
 
-    uploader = input.GremlinUploader(clargs.output_server, clargs.output_source)
+    uploader = graph_input.GremlinUploader(clargs.output_server, clargs.output_source)
     with open(clargs.input_file, 'r') as jsonfile:
-        uploader.from_d3js(jsonfile, clargs.input_file, verbose=clargs.verbose, drop_graph=clargs.delete)
+        uploader.from_d3js(jsonfile, clargs.input_file, drop_graph=clargs.delete)

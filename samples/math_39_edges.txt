@@ -1,0 +1,3 @@
+A commons-math 39 bug súlyozott éllistája. Formátuma: [metódusnév](tab)[tesztnév](tab)[súly]
+A gráf irányítatlan és tab-bal vannak elválasztva a csúcsok és a súly is.
+A súly azt mutatja, hogy a metódus hány olyan chain-ben szerepel, amelyik lefedi az adott tesztet.

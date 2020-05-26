@@ -1,7 +1,7 @@
 # python gremlin2gremlin.py -is "ws://localhost:8183/gremlin" -its "g" -os "ws://localhost:8182/gremlin" -ots "g"
 import pdb
 
-import input
+import graph_input
 import argparse
 import logging
 
@@ -57,5 +57,5 @@ if __name__ == '__main__':
 
     logging.basicConfig(level=logging.getLevelName(clargs.log_level))
 
-    uploader = input.GremlinUploader(clargs.output_server, clargs.output_source)
+    uploader = graph_input.GremlinUploader(clargs.output_server, clargs.output_source)
     uploader.from_gremlin(clargs.input_server, clargs.input_source, drop_graph=clargs.delete, label=clargs.input_label)

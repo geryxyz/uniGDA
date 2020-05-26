@@ -6,7 +6,7 @@ import logging
 
 if __name__ == '__main__':
     clap = argparse.ArgumentParser(
-        description='This script creates a scheme  Apache TinkerPop Gremlin graph formats to Apache TinkerPop Gremlin server.')
+        description='This script creates a scheme documentation for a graph hosted in a Apache TinkerPop Gremlin server.')
     clap.add_argument(
         '-is', '--input-server',
         dest='input_server',
