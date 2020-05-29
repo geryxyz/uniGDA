@@ -23,12 +23,14 @@ class GremlinUploader(object):
         logging.info("output Gremlin server: %s, %s" % (server_url, traversal_source))
         self.output_graph = anonymous_traversal.traversal().withRemote(
             DriverRemoteConnection(server_url, traversal_source))
+        self._added_node_ids = []
+        self._added_edge_ids = []
 
-    def _check_original_edge_id(self, new_id):
-        return new_id in self.output_graph.E().properties(ORIGINAL_ID).values().toList()
+    def _edge_id_present(self, new_id):
+        return new_id in self._added_edge_ids
 
-    def _check_original_node_id(self, new_id):
-        return new_id not in self.output_graph.V().properties(ORIGINAL_ID).values().toList()
+    def _node_id_present(self, new_id):
+        return new_id in self._added_node_ids
 
     def _add_edge(
             self,
@@ -39,12 +41,13 @@ class GremlinUploader(object):
             source_label: typing.AnyStr,
             original_id: _allowed_id_type = None):
         logging.debug("processing edge: %s --> %s" % (original_out_id, original_in_id))
-        if original_id and not self._check_original_edge_id(original_id):
+        if original_id and self._edge_id_present(original_id):
             raise AttributeError(f'duplicated edge id: {original_id}')
         out_node = self.output_graph.V().has(SOURCE_NAME, source_label).has(ORIGINAL_ID, original_out_id).next()
         in_node = self.output_graph.V().has(SOURCE_NAME, source_label).has(ORIGINAL_ID, original_in_id).next()
         new_edge = self.output_graph.addE(label).from_(out_node).to(in_node).next()
         if original_id:
+            self._added_edge_ids.append(original_id)
             self.output_graph.E(new_edge).property(ORIGINAL_ID, original_id).toList()
         self.output_graph.E(new_edge).property(SOURCE_NAME, source_label).toList()
         for prop, value in props.items():
@@ -58,9 +61,10 @@ class GremlinUploader(object):
             node_label: typing.AnyStr,
             source_label: typing.AnyStr):
         logging.debug("processing node: %s\nwith data: %s" % (original_id, props))
-        if not self._check_original_node_id(original_id):
+        if self._node_id_present(original_id):
             raise AttributeError(f'duplicated edge id: {original_id}')
         new_node = self.output_graph.addV(node_label).next()
+        self._added_node_ids.append(original_id)
         self.output_graph.V(new_node).property(ORIGINAL_ID, original_id).toList()
         self.output_graph.V(new_node).property(SOURCE_NAME, source_label).toList()
         for prop, value in props.items():
@@ -159,13 +163,14 @@ class GremlinUploader(object):
             self.target = target
             self.source = source
 
-    def edge_from_text(
+    def edges_from_text(
             self,
-            edge_list: typing.List[str],
+            edge_list: typing.Union[typing.List[str], typing.TextIO],
             source_name: str,
             parse: typing.Callable[[str], ParsedEdge],
             drop_graph: bool = True,
             label: str = None):
+        logging.info("loading edges from text list")
         source_label = source_name
         if label:
             source_label = label
@@ -175,9 +180,12 @@ class GremlinUploader(object):
             line = line.strip()
             if line == '':
                 continue
+            logging.info(f"processing: {line}")
             edge = parse(line)
 
-            self._add_node(edge.source.original_id, edge.source.props, edge.source.label, source_label)
-            self._add_node(edge.target.original_id, edge.target.props, edge.target.label, source_label)
+            if not self._node_id_present(edge.source.original_id):
+                self._add_node(edge.source.original_id, edge.source.props, edge.source.label, source_label)
+            if not self._node_id_present(edge.target.original_id):
+                self._add_node(edge.target.original_id, edge.target.props, edge.target.label, source_label)
             self._add_edge(edge.source.original_id, edge.target.original_id, edge.props, edge.label, source_label,
                            edge.original_id)
