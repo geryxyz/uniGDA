@@ -43,16 +43,16 @@ class GremlinUploader(object):
         logging.debug("processing edge: %s --> %s" % (original_out_id, original_in_id))
         if original_id and self._edge_id_present(original_id):
             raise AttributeError(f'duplicated edge id: {original_id}')
-        out_node = self.output_graph.V().has(SOURCE_NAME, source_label).has(ORIGINAL_ID, original_out_id).next()
-        in_node = self.output_graph.V().has(SOURCE_NAME, source_label).has(ORIGINAL_ID, original_in_id).next()
-        new_edge = self.output_graph.addE(label).from_(out_node).to(in_node).next()
+        out_node_query = self.output_graph.V().has(SOURCE_NAME, source_label).has(ORIGINAL_ID, original_out_id)
+        in_node_query = self.output_graph.V().has(SOURCE_NAME, source_label).has(ORIGINAL_ID, original_in_id)
+        new_edge_query = self.output_graph.addE(label).from_(out_node_query).to(in_node_query)
         if original_id:
             self._added_edge_ids.append(original_id)
-            self.output_graph.E(new_edge).property(ORIGINAL_ID, original_id).toList()
-        self.output_graph.E(new_edge).property(SOURCE_NAME, source_label).toList()
+            prop_query = new_edge_query.property(ORIGINAL_ID, original_id)
+        prop_query = prop_query.property(SOURCE_NAME, source_label)
         for prop, value in props.items():
-            self.output_graph.E(new_edge).property(prop, value).toList()
-        logging.debug("added properties: %s" % self.output_graph.E(new_edge).properties().toList())
+            prop_query = prop_query.property(prop, value)
+        return prop_query
 
     def _add_node(
             self,
@@ -63,13 +63,12 @@ class GremlinUploader(object):
         logging.debug("processing node: %s\nwith data: %s" % (original_id, props))
         if self._node_id_present(original_id):
             raise AttributeError(f'duplicated edge id: {original_id}')
-        new_node = self.output_graph.addV(node_label).next()
+        new_node_query = self.output_graph.addV(node_label)
         self._added_node_ids.append(original_id)
-        self.output_graph.V(new_node).property(ORIGINAL_ID, original_id).toList()
-        self.output_graph.V(new_node).property(SOURCE_NAME, source_label).toList()
+        prop_query = new_node_query.property(ORIGINAL_ID, original_id).property(SOURCE_NAME, source_label)
         for prop, value in props.items():
-            self.output_graph.V(new_node).property(prop, value).toList()
-        logging.debug("added properties: %s" % self.output_graph.V(new_node).properties().toList())
+            prop_query = prop_query.property(prop, value).toList()
+        return prop_query
 
     def _load_graph(self, json_graph):
         if isinstance(json_graph, str):
@@ -98,10 +97,10 @@ class GremlinUploader(object):
         self._drop_if(drop_graph)
 
         for id, props in input_graph.nodes(data=True):
-            self._add_node(id, props, 'node', source_label)
+            self._add_node(id, props, 'node', source_label).toList()
 
         for out_id, in_id, props in input_graph.edges(data=True):
-            self._add_edge(out_id, in_id, props, 'edge', source_label, -1)
+            self._add_edge(out_id, in_id, props, 'edge', source_label, -1).toList()
 
     def from_gremlin(
             self,
@@ -120,7 +119,7 @@ class GremlinUploader(object):
         for node in input_graph.V().toList():
             id = node.id
             props = {prop: value[0].value for prop, value in input_graph.V(node).propertyMap().next().items()}
-            self._add_node(id, props, node.label, source_label)
+            self._add_node(id, props, node.label, source_label).toList()
             add_node_count += 1
 
         add_edge_count = 0
@@ -130,7 +129,7 @@ class GremlinUploader(object):
             in_id = edge.inV.id
             out_id = edge.outV.id
             props = {prop: value.value for prop, value in input_graph.E(edge).propertyMap().next().items()}
-            self._add_edge(out_id, in_id, props, edge_label, source_label, id)
+            self._add_edge(out_id, in_id, props, edge_label, source_label, id).toList()
             add_edge_count += 1
 
         logging.info("original nodes count: %d" % input_graph.V().count().next())
