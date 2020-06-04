@@ -6,6 +6,7 @@ import typing
 import networkx as nx
 from gremlin_python.driver.driver_remote_connection import DriverRemoteConnection
 from gremlin_python.process import anonymous_traversal
+from gremlin_python.process.graph_traversal import GraphTraversal
 import logging
 import pdb
 
@@ -21,6 +22,7 @@ class GremlinUploader(object):
     def __init__(self, server_url, traversal_source):
         super().__init__()
         logging.info("output Gremlin server: %s, %s" % (server_url, traversal_source))
+        # travel = anonymous_traversal.traversal().withRemote(DriverRemoteConnection("ws://localhost:8182/gremlin", "g"))
         self.output_graph = anonymous_traversal.traversal().withRemote(
             DriverRemoteConnection(server_url, traversal_source))
         self._added_node_ids = []
@@ -39,36 +41,42 @@ class GremlinUploader(object):
             props: _allowed_propeties_type,
             label: typing.AnyStr,
             source_label: typing.AnyStr,
-            original_id: _allowed_id_type = None):
+            original_id: _allowed_id_type = None,
+            query: GraphTraversal = None) -> GraphTraversal:
+        if query is None:
+            query = self.output_graph
         logging.debug("processing edge: %s --> %s" % (original_out_id, original_in_id))
         if original_id and self._edge_id_present(original_id):
             raise AttributeError(f'duplicated edge id: {original_id}')
-        out_node_query = self.output_graph.V().has(SOURCE_NAME, source_label).has(ORIGINAL_ID, original_out_id)
-        in_node_query = self.output_graph.V().has(SOURCE_NAME, source_label).has(ORIGINAL_ID, original_in_id)
-        new_edge_query = self.output_graph.addE(label).from_(out_node_query).to(in_node_query)
+        out_node_query = self.output_graph.V().has(SOURCE_NAME, source_label).has(ORIGINAL_ID, original_out_id).limit(1)
+        in_node_query = self.output_graph.V().has(SOURCE_NAME, source_label).has(ORIGINAL_ID, original_in_id).limit(1)
+        query = query.addE(label).from_(out_node_query).to(in_node_query)
         if original_id:
             self._added_edge_ids.append(original_id)
-            prop_query = new_edge_query.property(ORIGINAL_ID, original_id)
-        prop_query = prop_query.property(SOURCE_NAME, source_label)
+            query = query.property(ORIGINAL_ID, original_id)
+        query = query.property(SOURCE_NAME, source_label)
         for prop, value in props.items():
-            prop_query = prop_query.property(prop, value)
-        return prop_query
+            query = query.property(prop, value)
+        return query
 
     def _add_node(
             self,
             original_id: _allowed_id_type,
             props: _allowed_propeties_type,
             node_label: typing.AnyStr,
-            source_label: typing.AnyStr):
+            source_label: typing.AnyStr,
+            query: GraphTraversal = None) -> GraphTraversal:
+        if query is None:
+            query = self.output_graph
         logging.debug("processing node: %s\nwith data: %s" % (original_id, props))
         if self._node_id_present(original_id):
             raise AttributeError(f'duplicated edge id: {original_id}')
-        new_node_query = self.output_graph.addV(node_label)
+        query = query.addV(node_label)
         self._added_node_ids.append(original_id)
-        prop_query = new_node_query.property(ORIGINAL_ID, original_id).property(SOURCE_NAME, source_label)
+        query = query.property(ORIGINAL_ID, original_id).property(SOURCE_NAME, source_label)
         for prop, value in props.items():
-            prop_query = prop_query.property(prop, value).toList()
-        return prop_query
+            query = query.property(prop, value).toList()
+        return query
 
     def _load_graph(self, json_graph):
         if isinstance(json_graph, str):
@@ -183,8 +191,8 @@ class GremlinUploader(object):
             edge = parse(line)
 
             if not self._node_id_present(edge.source.original_id):
-                self._add_node(edge.source.original_id, edge.source.props, edge.source.label, source_label)
+                self._add_node(edge.source.original_id, edge.source.props, edge.source.label, source_label).toList()
             if not self._node_id_present(edge.target.original_id):
-                self._add_node(edge.target.original_id, edge.target.props, edge.target.label, source_label)
+                self._add_node(edge.target.original_id, edge.target.props, edge.target.label, source_label).toList()
             self._add_edge(edge.source.original_id, edge.target.original_id, edge.props, edge.label, source_label,
-                           edge.original_id)
+                           edge.original_id).toList()

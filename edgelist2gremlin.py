@@ -8,7 +8,7 @@ def Bela_WGFL_parser(line: str):
     return graph_input.GremlinUploader.ParsedEdge(
         graph_input.GremlinUploader.ParsedNode(original_id=parts[0], label=parts[0]),
         graph_input.GremlinUploader.ParsedNode(original_id=parts[1], label=parts[0]),
-        original_id=f'{parts[0]}->{parts[1]}', label=f'{parts[0]}->{parts[1]}', props={'weight': parts[2]}
+        original_id=f'{parts[0]} -> {parts[1]}', label=f'{parts[0]} -> {parts[1]}', props={'weight': parts[2]}
     )
 
 
