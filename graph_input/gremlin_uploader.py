@@ -9,6 +9,7 @@ from gremlin_python.process import anonymous_traversal
 from gremlin_python.process.graph_traversal import GraphTraversal
 import logging
 import pdb
+import time
 
 SOURCE_NAME = 'source_name'
 
@@ -46,10 +47,8 @@ class GremlinUploader(object):
         if query is None:
             query = self.output_graph
         logging.debug("processing edge: %s --> %s" % (original_out_id, original_in_id))
-        if original_id and self._edge_id_present(original_id):
-            raise AttributeError(f'duplicated edge id: {original_id}')
-        out_node_query = self.output_graph.V().has(SOURCE_NAME, source_label).has(ORIGINAL_ID, original_out_id).limit(1)
-        in_node_query = self.output_graph.V().has(SOURCE_NAME, source_label).has(ORIGINAL_ID, original_in_id).limit(1)
+        out_node_query = self.output_graph.V().has(ORIGINAL_ID, original_out_id).has(SOURCE_NAME, source_label).limit(1)
+        in_node_query = self.output_graph.V().has(ORIGINAL_ID, original_in_id).has(SOURCE_NAME, source_label).limit(1)
         query = query.addE(label).from_(out_node_query).to(in_node_query)
         if original_id:
             self._added_edge_ids.append(original_id)
@@ -69,8 +68,6 @@ class GremlinUploader(object):
         if query is None:
             query = self.output_graph
         logging.debug("processing node: %s\nwith data: %s" % (original_id, props))
-        if self._node_id_present(original_id):
-            raise AttributeError(f'duplicated edge id: {original_id}')
         query = query.addV(node_label)
         self._added_node_ids.append(original_id)
         query = query.property(ORIGINAL_ID, original_id).property(SOURCE_NAME, source_label)
@@ -176,23 +173,51 @@ class GremlinUploader(object):
             source_name: str,
             parse: typing.Callable[[str], ParsedEdge],
             drop_graph: bool = True,
-            label: str = None):
+            label: str = None,
+            batch_size: int = 300):
         logging.info("loading edges from text list")
         source_label = source_name
         if label:
             source_label = label
         self._drop_if(drop_graph)
 
+        processed_line_count = 0
+        query = self.output_graph.V()
+        start = time.perf_counter()
         for line in edge_list:
             line = line.strip()
             if line == '':
                 continue
-            logging.info(f"processing: {line}")
+            logging.debug(f"processing: {line}")
             edge = parse(line)
 
+            if processed_line_count % batch_size == 0:
+                query.toList()
+                query = self.output_graph
+                duration = time.perf_counter() - start
+                logging.info(f"flushing {batch_size} lines during {duration:.4f} seconds. {processed_line_count} lines are processed")
+                start = time.perf_counter()
             if not self._node_id_present(edge.source.original_id):
-                self._add_node(edge.source.original_id, edge.source.props, edge.source.label, source_label).toList()
+                query = self._add_node(
+                    edge.source.original_id,
+                    edge.source.props,
+                    edge.source.label,
+                    source_label,
+                    query=query)
             if not self._node_id_present(edge.target.original_id):
-                self._add_node(edge.target.original_id, edge.target.props, edge.target.label, source_label).toList()
-            self._add_edge(edge.source.original_id, edge.target.original_id, edge.props, edge.label, source_label,
-                           edge.original_id).toList()
+                query = self._add_node(
+                    edge.target.original_id,
+                    edge.target.props,
+                    edge.target.label,
+                    source_label,
+                    query=query)
+            query = self._add_edge(
+                edge.source.original_id,
+                edge.target.original_id,
+                edge.props,
+                edge.label,
+                source_label,
+                edge.original_id,
+                query=query)
+            processed_line_count += 1
+        query.toList()
