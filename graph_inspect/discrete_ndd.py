@@ -7,16 +7,16 @@ from gremlin_python.structure.graph import Vertex, Edge
 
 class DiscreteNDD(dict):
     def __init__(self, inspected: Vertex, graph: GraphTraversal,
-                 neighbor_selector: typing.Callable[[Vertex], typing.List[Edge]] = None):
+                 neighbor_selector: typing.Callable[[Vertex], typing.List[Vertex]] = None):
         super().__init__({})
+        self.inspected = inspected
+        self.graph = graph
         if neighbor_selector is None:
             def neighbor_selector(node): return graph.V(node).both().toList()
         neighbors = neighbor_selector(inspected)
         for neigbor in neighbors:
             count_of_neighbor_adjacents = len(neighbor_selector(neigbor))
             self[count_of_neighbor_adjacents] = self.get(count_of_neighbor_adjacents, 0) + 1
-        self.inspected = inspected
-        self.graph = graph
 
     def offset_maximum(self):
         as_sorted = sorted(self.items(), key=lambda e: e[0])
