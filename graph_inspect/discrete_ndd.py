@@ -1,8 +1,11 @@
 import typing
 
 from PIL import Image, ImageDraw, ImageFont
+from floatrange import floatrange
 from gremlin_python.process.graph_traversal import GraphTraversal
 from gremlin_python.structure.graph import Vertex, Edge
+
+from graph_inspect import draw_ruler
 
 
 class DiscreteNDD(dict):
@@ -42,23 +45,8 @@ class DiscreteNDD(dict):
         if top_margin_ratio > 0 and title is not None:
             text_width, text_height = title_font.getsize(title)
             draw.text((int(width / 2 - text_width / 2), 0), title, fill=(0, 0, 0, 255), font=title_font)
-        rule_font = ImageFont.truetype('arial', size=int(height * bottom_margin_ratio * .6))
-        for value in range(0, offset_maximum, int(offset_maximum / tick_count)):
-            text_width, text_height = rule_font.getsize(str(value))
-            offset = (value / offset_maximum) * width
-            if offset_maximum - value < text_width:
-                draw.line([(offset, height * (1 - bottom_margin_ratio) + 3), (offset, height)],
-                          fill=(0, 0, 0, 255))
-                draw.text((offset - text_width - 3, height - text_height), str(value), fill=(0, 0, 0, 255), font=rule_font)
-            elif value < text_width:
-                draw.line([(offset, height * (1 - bottom_margin_ratio) + 3), (offset, height)],
-                          fill=(0, 0, 0, 255))
-                draw.text((offset + 3, height - text_height), str(value), fill=(0, 0, 0, 255), font=rule_font)
-            else:
-                draw.line([(offset, height * (1 - bottom_margin_ratio) + 3), (offset, height - text_height - 2)],
-                          fill=(0, 0, 0, 255))
-                draw.text((offset - (text_width / 2), height - text_height), str(value), fill=(0, 0, 0, 255), font=rule_font)
-        image.save(path)
+        draw_ruler(draw, width, height, bottom_margin_ratio, tick_count, offset_maximum)
+        image.save(f'{path}.png')
 
     def __str__(self):
         as_sorted = sorted(self.items(), key=lambda e: e[0])

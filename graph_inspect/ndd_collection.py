@@ -3,7 +3,7 @@ from gremlin_python.driver.driver_remote_connection import DriverRemoteConnectio
 from gremlin_python.process import anonymous_traversal
 
 import graph_input
-from graph_inspect import DiscreteNDD, ContinuesNDD
+from graph_inspect import DiscreteNDD, ContinuesNDD, NDD
 import os.path
 
 
@@ -14,18 +14,20 @@ class NDDCollection(list):
             strength_maximum = max([ndd.strength_maximum() for ndd in self])
             if title_extractor is None:
                 def title_extractor(node, graph): return graph.V(node).properties(graph_input.ORIGINAL_ID).value().limit(1).next()
-            ndd: typing.Union[DiscreteNDD]
-            for index, ndd in enumerate(self):
-                ndd.visualize(
-                    os.path.join(path, f'{index}.png'),
-                    title=title_extractor(ndd.inspected, ndd.graph),
-                    width=width, height=height,
-                    offset_maximum=offset_maximum, strength_maximum=strength_maximum,
-                    top_margin_ratio=top_margin_ratio, bottom_margin_ratio=bottom_margin_ratio,
-                    tick_count=tick_count)
+            with open('toc.txt', 'w') as table_of_contents:
+                ndd: typing.Union[DiscreteNDD, ContinuesNDD, NDD]
+                for index, ndd in enumerate(self):
+                    ndd.visualize(
+                        os.path.join(path, str(index)),
+                        title=title_extractor(ndd.inspected, ndd.graph),
+                        width=width, height=height,
+                        offset_maximum=offset_maximum, strength_maximum=strength_maximum,
+                        top_margin_ratio=top_margin_ratio, bottom_margin_ratio=bottom_margin_ratio,
+                        tick_count=tick_count)
+                    table_of_contents.write(f'{index}: {ndd}\n')
 
 
 if __name__ == "__main__":
     graph = anonymous_traversal.traversal().withRemote(DriverRemoteConnection('ws://localhost:8182/gremlin', 'g'))
-    dndds = NDDCollection([ContinuesNDD(node, graph) for node in graph.V().limit(5).toList()])
+    dndds = NDDCollection([NDD(node, graph) for node in graph.V().limit(3).toList()])
     dndds.visualize('.')

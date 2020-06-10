@@ -11,6 +11,7 @@ from statistics import stdev
 import logging
 
 import graph_input
+from graph_inspect import draw_ruler
 
 
 class ModifiedGauss(object):
@@ -42,7 +43,6 @@ class ContinuesNDD(list):
                  weight_selector: typing.Callable[[Edge], typing.Union[int, float]] = None,
                  edge_selector: typing.Callable[[Vertex], typing.List[Edge]] = None):
         super().__init__({})
-        print(f'{inspected}... ', end='')
         self.inspected = inspected
         self.graph = graph
         if neighbor_selector is None:
@@ -53,7 +53,6 @@ class ContinuesNDD(list):
             def weight_selector(edge): return float(graph.E(edge).properties('weight').value().limit(1).next())
         neighbors = neighbor_selector(inspected)
         for neighbor in neighbors:
-            print(".", end='')
             count_of_neighbor_adjacents = len(neighbor_selector(neighbor))
             weights = [weight_selector(edge) for edge in edge_selector(neighbor)]
             if len(weights) > 1:
@@ -64,7 +63,6 @@ class ContinuesNDD(list):
             neighbor_weight = weight_selector(neighbor_edge)
             gauss = ModifiedGauss(height=neighbor_weight, offset=count_of_neighbor_adjacents, width=stdev_of_neighbor_edges)
             self.append(gauss)
-        print()
 
     def value(self, x, aggregation: typing.Callable[[typing.List[float]], float] = sum_of_squares):
         return aggregation([gauss(x) for gauss in self])
@@ -93,25 +91,13 @@ class ContinuesNDD(list):
             draw.line(
                 [(image_x, height * top_margin_ratio), (image_x, height * (1 - bottom_margin_ratio))],
                 fill=(strength, strength, strength, 255))
-        rule_font = ImageFont.truetype('arial', size=int(height * bottom_margin_ratio * .6))
-        for value in floatrange(0, offset_maximum, offset_maximum / tick_count):
-            mark = f'{value:.2f}'
-            text_width, text_height = rule_font.getsize(mark)
-            offset = int((value / offset_maximum) * width)
-            if offset_maximum - value < text_width:
-                draw.line([(offset, height * (1 - bottom_margin_ratio) + 3), (offset, height)],
-                          fill=(0, 0, 0, 255))
-                draw.text((offset - text_width - 3, height - text_height), mark, fill=(0, 0, 0, 255), font=rule_font)
-            elif value < text_width:
-                draw.line([(offset, height * (1 - bottom_margin_ratio) + 3), (offset, height)],
-                          fill=(0, 0, 0, 255))
-                draw.text((offset + 3, height - text_height), mark, fill=(0, 0, 0, 255), font=rule_font)
-            else:
-                draw.line([(offset, height * (1 - bottom_margin_ratio) + 3), (offset, height - text_height - 2)],
-                          fill=(0, 0, 0, 255))
-                draw.text((offset - (text_width / 2), height - text_height), mark, fill=(0, 0, 0, 255), font=rule_font)
+        draw_ruler(draw, width, height, bottom_margin_ratio, tick_count, offset_maximum)
         draw.rectangle([(0, height * top_margin_ratio), (width - 1, height * (1 - bottom_margin_ratio))], outline=(0, 0, 0, 255))
-        image.save(path)
+        image.save(f'{path}.png')
+
+    def __str__(self):
+        gauss: ModifiedGauss
+        return ', '.join([f'|{gauss.height:.4f}-{gauss.width:.4f}@{gauss.offset:.4f}' for gauss in sorted(self, key=lambda g: g.offset)])
 
 
 if __name__ == '__main__':
