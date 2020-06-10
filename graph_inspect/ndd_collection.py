@@ -3,7 +3,7 @@ from gremlin_python.driver.driver_remote_connection import DriverRemoteConnectio
 from gremlin_python.process import anonymous_traversal
 
 import graph_input
-from graph_inspect import DiscreteNDD
+from graph_inspect import DiscreteNDD, ContinuesNDD
 import os.path
 
 
@@ -27,5 +27,5 @@ class NDDCollection(list):
 
 if __name__ == "__main__":
     graph = anonymous_traversal.traversal().withRemote(DriverRemoteConnection('ws://localhost:8182/gremlin', 'g'))
-    dndds = NDDCollection([DiscreteNDD(node, graph) for node in graph.V().limit(30).toList()])
+    dndds = NDDCollection([ContinuesNDD(node, graph) for node in graph.V().limit(5).toList()])
     dndds.visualize('.')
