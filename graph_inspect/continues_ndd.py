@@ -11,7 +11,7 @@ from statistics import stdev
 import logging
 
 import graph_input
-from graph_inspect import draw_ruler
+from graph_inspect import draw_ruler, text_with_boarder, EmptyGraph
 
 
 class ModifiedGauss(object):
@@ -24,10 +24,10 @@ class ModifiedGauss(object):
         if self.width != 0:
             return self.height * math.e ** -((x - self.offset) ** 2 / (2 * self.width ** 2))
         else:
-            if x == 0:
+            if x == self.offset:
                 return self.height
             else:
-                return 0
+                return 0.0
 
     def __str__(self):
         return f'g(x, {self.height}, {self.offset}, {self.width})'
@@ -68,30 +68,50 @@ class ContinuesNDD(list):
         return aggregation([gauss(x) for gauss in self])
 
     def offset_maximum(self):
-        return max([gauss.offset + gauss.width for gauss in self])
+        if self:
+            return max([gauss.offset + gauss.width for gauss in self])
+        else:
+            return 0
 
     def strength_maximum(self, step_size: float = .5):
-        max_offset = self.offset_maximum()
-        return max([self.value(x) for x in floatrange(0, max_offset, step_size)])
+        if self:
+            max_offset = self.offset_maximum()
+            return max([self.value(x) for x in floatrange(0, max_offset, step_size)])
+        else:
+            return 0
 
     def visualize(self, path, title=None, width=900, height=100, offset_maximum=None, strength_maximum=None, top_margin_ratio=.3, bottom_margin_ratio=.2, tick_count=5):
         if offset_maximum is None:
             offset_maximum = self.offset_maximum()
         if strength_maximum is None:
-            strength_maximum = self.strength_maximum(offset_maximum / width)
+            step_size = offset_maximum / width
+            strength_maximum = self.strength_maximum(step_size)
+        else:
+            step_size = 0
         image = Image.new('RGBA', (width, height), color=(255, 255, 255, 255))
         draw = ImageDraw.Draw(image)
         title_font = ImageFont.truetype('arial', size=int(height * top_margin_ratio * .6))
         if top_margin_ratio > 0 and title is not None:
             text_width, text_height = title_font.getsize(title)
             draw.text((int(width / 2 - text_width / 2), 0), title, fill=(0, 0, 0, 255), font=title_font)
-        for image_x in range(width):
-            x = (image_x / width) * offset_maximum
-            strength = int((1 - self.value(x) / strength_maximum) * 255)
-            draw.line(
-                [(image_x, height * top_margin_ratio), (image_x, height * (1 - bottom_margin_ratio))],
-                fill=(strength, strength, strength, 255))
-        draw_ruler(draw, width, height, bottom_margin_ratio, tick_count, offset_maximum)
+        if self:
+            hint_font = ImageFont.truetype('arial', size=int(height * bottom_margin_ratio * .6))
+            for image_x in range(width):
+                x = (image_x / width) * offset_maximum
+                nearest_gauss: ModifiedGauss = min(self, key=lambda gauss: abs(gauss.offset - x))
+                strength = int((1 - self.value(x) / strength_maximum) * 255)
+                draw.line(
+                    [(image_x, height * top_margin_ratio), (image_x, height * (1 - bottom_margin_ratio))],
+                    fill=(strength, strength, strength, 255))
+                if abs(nearest_gauss.offset - x) <= step_size:
+                    nearest_value = self.value(nearest_gauss.offset)
+                    hint = f'{self.value(nearest_gauss.offset):.4f}'
+                    text_width, text_height = hint_font.getsize(hint)
+                    if text_width < image_x < width - text_width:
+                        text_with_boarder(draw, (image_x, height * top_margin_ratio), hint, hint_font)
+            draw_ruler(draw, width, height, bottom_margin_ratio, tick_count, offset_maximum)
+        else:
+            text_with_boarder(draw, (width / 2, height / 2), 'empty cNDD', font=title_font)
         draw.rectangle([(0, height * top_margin_ratio), (width - 1, height * (1 - bottom_margin_ratio))], outline=(0, 0, 0, 255))
         image.save(f'{path}.png')
 
@@ -101,9 +121,9 @@ class ContinuesNDD(list):
 
 
 if __name__ == '__main__':
-    graph = anonymous_traversal.traversal().withRemote(DriverRemoteConnection('ws://localhost:8182/gremlin', 'g'))
-    for node in graph.V().limit(3).toList():
-        cndd = ContinuesNDD(node, graph)
-        name = graph.V(node).properties(graph_input.ORIGINAL_ID).value().limit(1).next()
-        cndd.visualize(f'{node.id}.png', title=name)
+    genrator = EmptyGraph('ws://localhost:8182/gremlin', 'g', 5)
+    genrator.add_random_edge(50)
+    for index, node in enumerate(genrator.output_graph.V().toList()):
+        cndd = ContinuesNDD(node, genrator.output_graph)
+        cndd.visualize(str(index))
     pass
