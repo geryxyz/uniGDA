@@ -39,7 +39,13 @@ class DiscreteNDD(dict):
         else:
             return 0
 
-    def visualize(self, path, title=None, width=900, height=100, offset_maximum=None, strength_maximum=None, top_margin_ratio=.3, bottom_margin_ratio=.2, tick_count=5):
+    def visualize(self,
+                  path, title=None,
+                  width=900, height=100,
+                  offset_maximum=None, strength_maximum=None,
+                  top_margin_ratio=.3, bottom_margin_ratio=.2,
+                  tick_count=5,
+                  save: bool = True):
         as_sorted = sorted(self.items(), key=lambda e: e[0])
         if offset_maximum is None:
             offset_maximum = self.offset_maximum()
@@ -47,24 +53,27 @@ class DiscreteNDD(dict):
             strength_maximum = self.strength_maximum()
         image = Image.new('RGBA', (width, height), color=(255, 255, 255, 255))
         draw = ImageDraw.Draw(image)
-        hint_font = ImageFont.truetype('arial', size=int(height * bottom_margin_ratio * .6))
-        for entry in as_sorted:
-            offset = (entry[0] / offset_maximum) * width
-            strength = int((1 - entry[1] / strength_maximum) * 255)
-            draw.line([(offset, height * top_margin_ratio), (offset, height * (1 - bottom_margin_ratio))], fill=(strength, strength, strength, 255))
-            hint = str(entry[1])
-            text_width, text_height = hint_font.getsize(hint)
-            if text_width < offset < width - text_width:
-                text_with_boarder(draw, (offset, height * top_margin_ratio), hint, hint_font)
         title_font = ImageFont.truetype('arial', size=int(height * top_margin_ratio * .6))
         if top_margin_ratio > 0 and title is not None:
             text_width, text_height = title_font.getsize(title)
-            draw.text((int(width / 2 - text_width / 2), 0), title, fill=(0, 0, 0, 255), font=title_font)
-        if offset_maximum > 0:
+            draw.text((int(width / 2 - text_width / 2), height * top_margin_ratio - text_height - 2), title, fill=(0, 0, 0, 255), font=title_font)
+        hint_font = ImageFont.truetype('arial', size=int(height * bottom_margin_ratio * .6))
+        if self:
+            for entry in as_sorted:
+                offset = (entry[0] / offset_maximum) * width
+                strength = int((1 - entry[1] / strength_maximum) * 255)
+                draw.line([(offset, height * top_margin_ratio), (offset, height * (1 - bottom_margin_ratio))], fill=(strength, strength, strength, 255))
+                hint = str(entry[1])
+                text_width, text_height = hint_font.getsize(hint)
+                if text_width < offset < width - text_width:
+                    text_with_boarder(draw, (offset, height * top_margin_ratio + text_height), hint, hint_font)
             draw_ruler(draw, width, height, bottom_margin_ratio, tick_count, offset_maximum)
         else:
             text_with_boarder(draw, (width / 2, height / 2), 'empty dNDD', font=title_font)
-        image.save(f'{path}.png')
+        if save:
+            image.save(f'{path}.png')
+        else:
+            return image
 
     def __str__(self):
         as_sorted = sorted(self.items(), key=lambda e: e[0])

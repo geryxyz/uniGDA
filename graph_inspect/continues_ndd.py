@@ -61,7 +61,8 @@ class ContinuesNDD(list):
                 stdev_of_neighbor_edges = 0
             neighbor_edge = graph.V(inspected).bothE().filter(__.otherV().is_(neighbor)).limit(1).next()
             neighbor_weight = weight_selector(neighbor_edge)
-            gauss = ModifiedGauss(height=neighbor_weight, offset=count_of_neighbor_adjacents, width=stdev_of_neighbor_edges)
+            gauss = ModifiedGauss(height=neighbor_weight, offset=count_of_neighbor_adjacents,
+                                  width=stdev_of_neighbor_edges)
             self.append(gauss)
 
     def value(self, x, aggregation: typing.Callable[[typing.List[float]], float] = sum_of_squares):
@@ -79,20 +80,25 @@ class ContinuesNDD(list):
         else:
             return 0
 
-    def visualize(self, path, title=None, width=900, height=100, offset_maximum=None, strength_maximum=None, top_margin_ratio=.3, bottom_margin_ratio=.2, tick_count=5):
+    def visualize(self,
+                  path, title=None,
+                  width=900, height=100,
+                  offset_maximum=None, strength_maximum=None,
+                  top_margin_ratio=.3, bottom_margin_ratio=.2,
+                  tick_count=5,
+                  save: bool = True):
         if offset_maximum is None:
             offset_maximum = self.offset_maximum()
         if strength_maximum is None:
-            step_size = offset_maximum / width
             strength_maximum = self.strength_maximum()
-        else:
-            step_size = 0
+        step_size = offset_maximum / width
         image = Image.new('RGBA', (width, height), color=(255, 255, 255, 255))
         draw = ImageDraw.Draw(image)
         title_font = ImageFont.truetype('arial', size=int(height * top_margin_ratio * .6))
         if top_margin_ratio > 0 and title is not None:
             text_width, text_height = title_font.getsize(title)
-            draw.text((int(width / 2 - text_width / 2), 0), title, fill=(0, 0, 0, 255), font=title_font)
+            draw.text((int(width / 2 - text_width / 2), height * top_margin_ratio - text_height - 2), title,
+                      fill=(0, 0, 0, 255), font=title_font)
         if self:
             hint_font = ImageFont.truetype('arial', size=int(height * bottom_margin_ratio * .6))
             for image_x in range(width):
@@ -108,22 +114,25 @@ class ContinuesNDD(list):
                 if last_nearest_gauss != nearest_gauss and abs(nearest_gauss.offset - x) <= step_size:
                     hint = f'{self.value(nearest_gauss.offset):.4f}'
                     text_width, text_height = hint_font.getsize(hint)
+                    draw.line([(image_x, height * top_margin_ratio), (image_x, height * (1 - bottom_margin_ratio))],
+                              fill=(255, 0, 0, 255))
                     if text_width < image_x < width - text_width:
-                        for y in range(int(height * top_margin_ratio), int(height * (1 - bottom_margin_ratio))):
-                            is_dashing = y % 10 > 5
-                            if is_dashing:
-                                image.putpixel((image_x, y), (is_dashing, is_dashing, is_dashing, 255))
                         text_with_boarder(draw, (image_x, height * top_margin_ratio + text_height), hint, hint_font)
-                        last_nearest_gauss = nearest_gauss
+                    last_nearest_gauss = nearest_gauss
             draw_ruler(draw, width, height, bottom_margin_ratio, tick_count, offset_maximum)
         else:
             text_with_boarder(draw, (width / 2, height / 2), 'empty cNDD', font=title_font)
-        draw.rectangle([(0, height * top_margin_ratio), (width - 1, height * (1 - bottom_margin_ratio))], outline=(0, 0, 0, 255))
-        image.save(f'{path}.png')
+        draw.rectangle([(0, height * top_margin_ratio), (width - 1, height * (1 - bottom_margin_ratio))],
+                       outline=(0, 0, 0, 255))
+        if save:
+            image.save(f'{path}.png')
+        else:
+            return image
 
     def __str__(self):
         gauss: ModifiedGauss
-        return ', '.join([f'|{gauss.height:.4f}-{gauss.width:.4f}@{gauss.offset:.4f}' for gauss in sorted(self, key=lambda g: g.offset)])
+        return ', '.join([f'|{gauss.height:.4f}-{gauss.width:.4f}@{gauss.offset:.4f}' for gauss in
+                          sorted(self, key=lambda g: g.offset)])
 
 
 if __name__ == '__main__':
