@@ -15,7 +15,7 @@ class EmptyGraph(object):
         for index in range(vertex_count):
             self.output_graph.addV().next()
 
-    def add_random_edge(self, edge_count, weight=1):
+    def add_random_edge(self, edge_count=1, weight=1):
         for index in range(edge_count):
             if weight is None:
                 weight = random.random()

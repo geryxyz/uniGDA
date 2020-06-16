@@ -32,6 +32,10 @@ class ModifiedGauss(object):
     def __str__(self):
         return f'g(x, {self.height}, {self.offset}, {self.width})'
 
+    def __eq__(self, other):
+        return isinstance(other, ModifiedGauss)\
+               and self.height == other.height and self.width == other.width and self.offset == other.offset
+
 
 def sum_of_squares(values: typing.List[float]) -> float:
     return sum([value ** 2 for value in values])

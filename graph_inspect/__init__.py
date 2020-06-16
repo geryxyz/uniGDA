@@ -7,3 +7,4 @@ from .continues_ndd import *
 from .ndd import *
 
 from .ndd_collection import *
+from .graph_inspector import *

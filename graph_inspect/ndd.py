@@ -49,3 +49,6 @@ class NDD(object):
 
     def __str__(self):
         return f'dNDD={self.discrete}, cNDD={self.continues}'
+
+    def __eq__(self, other):
+        return isinstance(other, NDD) and self.discrete == other.discrete and self.continues == other.continues

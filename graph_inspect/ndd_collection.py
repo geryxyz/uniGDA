@@ -10,7 +10,7 @@ from graph_input.generator import EmptyGraph
 import os.path
 
 
-class NDDCollection(list):
+class NDDCollection(dict):
     def visualize(self, path, title_extractor: typing.Callable[[Vertex, GraphTraversal], str]=None, width=900, height=300, top_margin_ratio=.3, bottom_margin_ratio=.2, tick_count=5):
         if self:
             offset_maximum = max([ndd.offset_maximum() for ndd in self])
@@ -30,16 +30,10 @@ class NDDCollection(list):
                         tick_count=tick_count)
                     table_of_contents.write(f'{index}: {ndd}\n')
 
-    @staticmethod
-    def all_ndds_of(graph: GraphTraversal):
-        nodes = graph.V().toList()
-        ndds = NDDCollection()
-        ndds.extend([NDD(node, graph) for node in nodes])
-        return ndds
+    def add(self, new_ndd: typing.Union[DiscreteNDD, ContinuesNDD, NDD]):
+        self[new_ndd] = self.get(new_ndd, 0) + 1
 
 
 if __name__ == "__main__":
     genrator = EmptyGraph('ws://localhost:8182/gremlin', 'g', 5)
     genrator.add_random_edge(50)
-    ndds = NDDCollection.all_ndds_of(genrator.output_graph)
-    ndds.visualize('.', title_extractor=lambda node, graph: str(node.id))

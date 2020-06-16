@@ -108,5 +108,6 @@ venv.bak/
 test_server/
 scheme.html
 *.png
+*.gif
 *.zip
 toc.txt
