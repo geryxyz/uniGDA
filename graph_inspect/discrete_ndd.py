@@ -12,7 +12,7 @@ from graph_input.generator import EmptyGraph
 from graph_inspect import draw_ruler, text_with_boarder
 
 
-class DiscreteNDD():
+class DiscreteNDD:
     def __init__(self, inspected: Vertex, graph: GraphTraversal,
                  neighbor_selector: typing.Callable[[Vertex], typing.List[Vertex]] = None):
         self.inspected = inspected

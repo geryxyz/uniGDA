@@ -41,12 +41,11 @@ def sum_of_squares(values: typing.List[float]) -> float:
     return sum([value ** 2 for value in values])
 
 
-class ContinuesNDD(list):
+class ContinuesNDD:
     def __init__(self, inspected: Vertex, graph: GraphTraversal,
                  neighbor_selector: typing.Callable[[Vertex], typing.List[Vertex]] = None,
                  weight_selector: typing.Callable[[Edge], typing.Union[int, float]] = None,
                  edge_selector: typing.Callable[[Vertex], typing.List[Edge]] = None):
-        super().__init__({})
         self.inspected = inspected
         self.graph = graph
         if neighbor_selector is None:
@@ -56,6 +55,7 @@ class ContinuesNDD(list):
         if weight_selector is None:
             def weight_selector(edge): return float(graph.E(edge).properties('weight').value().limit(1).next())
         neighbors = neighbor_selector(inspected)
+        curve = []
         for neighbor in neighbors:
             count_of_neighbor_adjacents = len(neighbor_selector(neighbor))
             weights = [weight_selector(edge) for edge in edge_selector(neighbor)]
@@ -67,20 +67,21 @@ class ContinuesNDD(list):
             neighbor_weight = weight_selector(neighbor_edge)
             gauss = ModifiedGauss(height=neighbor_weight, offset=count_of_neighbor_adjacents,
                                   width=stdev_of_neighbor_edges)
-            self.append(gauss)
+            curve.append(gauss)
+        self._curve = tuple(curve)
 
     def value(self, x, aggregation: typing.Callable[[typing.List[float]], float] = sum_of_squares):
-        return aggregation([gauss(x) for gauss in self])
+        return aggregation([gauss(x) for gauss in self._curve])
 
     def offset_maximum(self):
-        if self:
-            return max([gauss.offset + gauss.width for gauss in self])
+        if self._curve:
+            return max([gauss.offset + gauss.width for gauss in self._curve])
         else:
             return 0
 
     def strength_maximum(self):
-        if self:
-            return max([self.value(gauss.offset) for gauss in self])
+        if self._curve:
+            return max([self.value(gauss.offset) for gauss in self._curve])
         else:
             return 0
 
@@ -103,7 +104,7 @@ class ContinuesNDD(list):
             text_width, text_height = title_font.getsize(title)
             draw.text((int(width / 2 - text_width / 2), height * top_margin_ratio - text_height - 2), title,
                       fill=(0, 0, 0, 255), font=title_font)
-        if self:
+        if self._curve:
             hint_font = ImageFont.truetype('arial', size=int(height * bottom_margin_ratio * .6))
             for image_x in range(width):
                 x = (image_x / width) * offset_maximum
@@ -114,7 +115,7 @@ class ContinuesNDD(list):
             last_nearest_gauss = None
             for image_x in range(width):
                 x = (image_x / width) * offset_maximum
-                nearest_gauss: ModifiedGauss = min(self, key=lambda gauss: abs(gauss.offset - x))
+                nearest_gauss: ModifiedGauss = min(self._curve, key=lambda gauss: abs(gauss.offset - x))
                 if last_nearest_gauss != nearest_gauss and abs(nearest_gauss.offset - x) <= step_size:
                     hint = f'{self.value(nearest_gauss.offset):.4f}'
                     text_width, text_height = hint_font.getsize(hint)
@@ -136,12 +137,12 @@ class ContinuesNDD(list):
     def __str__(self):
         gauss: ModifiedGauss
         return ', '.join([f'|{gauss.height:.4f}-{gauss.width:.4f}@{gauss.offset:.4f}' for gauss in
-                          sorted(self, key=lambda g: g.offset)])
+                          sorted(self._curve, key=lambda g: g.offset)])
 
 
 if __name__ == '__main__':
     genrator = EmptyGraph('ws://localhost:8182/gremlin', 'g', 5)
-    genrator.add_random_edge(50)
+    genrator.add_random_edge(50, weight=None)
     for index, node in enumerate(genrator.output_graph.V().toList()):
         cndd = ContinuesNDD(node, genrator.output_graph)
         cndd.visualize(str(index))
