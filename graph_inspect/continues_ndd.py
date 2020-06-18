@@ -36,6 +36,9 @@ class ModifiedGauss(object):
         return isinstance(other, ModifiedGauss)\
                and self.height == other.height and self.width == other.width and self.offset == other.offset
 
+    def __hash__(self):
+        return hash((self.offset, self.width, self.height))
+
 
 def sum_of_squares(values: typing.List[float]) -> float:
     return sum([value ** 2 for value in values])
@@ -136,8 +139,11 @@ class ContinuesNDD:
 
     def __str__(self):
         gauss: ModifiedGauss
-        return ', '.join([f'|{gauss.height:.4f}-{gauss.width:.4f}@{gauss.offset:.4f}' for gauss in
-                          sorted(self._curve, key=lambda g: g.offset)])
+        return '(' + ', '.join([f'|{gauss.height:.4f}-{gauss.width:.4f}@{gauss.offset:.4f}' for gauss in
+                          sorted(self._curve, key=lambda g: g.offset)]) + ')'
+
+    def is_alike(self, other):
+        return isinstance(other, ContinuesNDD) and self._curve == other._curve
 
 
 if __name__ == '__main__':

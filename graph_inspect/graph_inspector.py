@@ -63,6 +63,20 @@ class GraphInspector(object):
             degrees[degree] = degrees.get(degree, 0) + 1
         return degrees
 
+    def visualize(self, title_extractor: typing.Callable[[Vertex, GraphTraversal], str] = None):
+        ndds = self.all_ndds_of()
+        if title_extractor is None:
+            def title_extractor(node, graph): return node.id
+        groups: typing.List[typing.List[typing.Tuple[object, Image]]] = []
+        for ndd, image in ndds.visualize('.', title_extractor=title_extractor, save=False):
+            for group in groups:
+                if any([ndd.is_alike(candidate) for candidate in group]):
+                    group.append(ndd)
+                    break
+            else:
+                groups.append([ndd])
+        print()
+
 
 if __name__ == "__main__":
     max_node_count = 10
@@ -71,10 +85,12 @@ if __name__ == "__main__":
     max_edge_count = 50
     degree_distributions = []
     for count in range(max_edge_count):
+        print(count)
         genrator.add_random_edge(weight=None)
-        ndds = inspector.all_ndds_of()
-        os.mkdir(f'count_{count}')
-        ndds.visualize(f'count_{count}', title_extractor=lambda node, graph: str(node.id))
+        count_dir = f'count_{count}'
+        if not os.path.isdir(count_dir):
+            os.mkdir(count_dir)
+        inspector.visualize()
         degree_distributions.append(inspector.degree_distribution())
     frames = []
     xmax = max([max(dist.keys()) for dist in degree_distributions])

@@ -94,6 +94,9 @@ class DiscreteNDD:
             glyphs.append(str(current[1]))
         return f"[{'; '.join(glyphs)}]"
 
+    def is_alike(self, other):
+        return isinstance(other, DiscreteNDD) and self._vector == other._vector
+
 
 if __name__ == '__main__':
     genrator = EmptyGraph('ws://localhost:8182/gremlin', 'g', 5)

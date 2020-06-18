@@ -19,7 +19,8 @@ class EmptyGraph(object):
         for index in range(edge_count):
             if weight is None:
                 _weight = random.random()
-            self.output_graph.addE('random').from_(self.output_graph.V().sample(1)).to(self.output_graph.V().sample(1)).property(WEIGHT, _weight).next()
+            edge = self.output_graph.addE('random').from_(self.output_graph.V().sample(1)).to(self.output_graph.V().sample(1)).property(WEIGHT, _weight).next()
+            print(edge)
 
 
 if __name__ == '__main__':
