@@ -52,6 +52,8 @@ class DiscreteNDD:
             offset_maximum = self.offset_maximum()
         if strength_maximum is None:
             strength_maximum = self.strength_maximum()
+        if title is None:
+            top_margin_ratio = 0
         image = Image.new('RGBA', (width, height), color=(255, 255, 255, 255))
         draw = ImageDraw.Draw(image)
         title_font = ImageFont.truetype('arial', size=int(height * top_margin_ratio * .6))
@@ -70,7 +72,8 @@ class DiscreteNDD:
                     text_with_boarder(draw, (offset, height * top_margin_ratio + text_height), hint, hint_font)
             draw_ruler(draw, width, height, bottom_margin_ratio, tick_count, offset_maximum)
         else:
-            text_with_boarder(draw, (width / 2, height / 2), 'empty dNDD', font=title_font)
+            font = ImageFont.truetype('arial', size=int(height * .3))
+            text_with_boarder(draw, (width / 2, height / 2), 'empty dNDD', font=font)
         if save:
             image.save(f'{path}.png')
         else:

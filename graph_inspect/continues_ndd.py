@@ -99,6 +99,8 @@ class ContinuesNDD:
             offset_maximum = self.offset_maximum()
         if strength_maximum is None:
             strength_maximum = self.strength_maximum()
+        if title is None:
+            top_margin_ratio = 0
         step_size = offset_maximum / width
         image = Image.new('RGBA', (width, height), color=(255, 255, 255, 255))
         draw = ImageDraw.Draw(image)
@@ -129,7 +131,8 @@ class ContinuesNDD:
                     last_nearest_gauss = nearest_gauss
             draw_ruler(draw, width, height, bottom_margin_ratio, tick_count, offset_maximum)
         else:
-            text_with_boarder(draw, (width / 2, height / 2), 'empty cNDD', font=title_font)
+            font = ImageFont.truetype('arial', size=int(height * .3))
+            text_with_boarder(draw, (width / 2, height / 2), 'empty cNDD', font=font)
         draw.rectangle([(0, height * top_margin_ratio), (width - 1, height * (1 - bottom_margin_ratio))],
                        outline=(0, 0, 0, 255))
         if save:
