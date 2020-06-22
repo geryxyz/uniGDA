@@ -23,33 +23,29 @@ class NDD(object):
         return max(self.discrete.strength_maximum(), self.continues.strength_maximum())
 
     def visualize(self,
-                  path, title=None, discrete_title=None, continues_title=None,
+                  title=None, discrete_title=None, continues_title=None,
                   width=900, height=200,
                   offset_maximum=None, strength_maximum=None,
                   top_margin_ratio=.3, bottom_margin_ratio=.2,
-                  tick_count=5,
-                  save: bool = True):
+                  tick_count=5):
         if continues_title is None:
             continues_title = title
         if discrete_title is None:
             discrete_title = title
         image = Image.new('RGBA', (width, height), color=(255, 255, 255, 255))
-        discrete_image = self.discrete.visualize(f'{path}.discrete', discrete_title,
+        discrete_image = self.discrete.visualize(discrete_title,
                                                  width, int(height / 2),
                                                  offset_maximum, strength_maximum,
                                                  top_margin_ratio, bottom_margin_ratio,
-                                                 tick_count, save=False)
-        continues_image = self.continues.visualize(f'{path}.continues', continues_title,
+                                                 tick_count)
+        continues_image = self.continues.visualize(continues_title,
                                                    width, int(height / 2),
                                                    offset_maximum, strength_maximum,
                                                    top_margin_ratio, bottom_margin_ratio,
-                                                   tick_count, save=False)
+                                                   tick_count)
         image.paste(discrete_image, (0, 0))
         image.paste(continues_image, (0, int(height / 2)))
-        if save:
-            image.save(f'{path}.png')
-        else:
-            return image
+        return image
 
     def __str__(self):
         return f'dNDD={self.discrete}, cNDD={self.continues}'

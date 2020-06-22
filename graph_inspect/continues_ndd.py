@@ -89,12 +89,11 @@ class ContinuesNDD:
             return 0
 
     def visualize(self,
-                  path, title=None,
+                  title=None,
                   width=900, height=100,
                   offset_maximum=None, strength_maximum=None,
                   top_margin_ratio=.3, bottom_margin_ratio=.2,
-                  tick_count=5,
-                  save: bool = True):
+                  tick_count=5):
         if offset_maximum is None:
             offset_maximum = self.offset_maximum()
         if strength_maximum is None:
@@ -135,10 +134,7 @@ class ContinuesNDD:
             text_with_boarder(draw, (width / 2, height / 2), 'empty cNDD', font=font)
         draw.rectangle([(0, height * top_margin_ratio), (width - 1, height * (1 - bottom_margin_ratio))],
                        outline=(0, 0, 0, 255))
-        if save:
-            image.save(f'{path}.png')
-        else:
-            return image
+        return image
 
     def __str__(self):
         gauss: ModifiedGauss

@@ -41,12 +41,11 @@ class DiscreteNDD:
             return 0
 
     def visualize(self,
-                  path, title=None,
+                  title=None,
                   width=900, height=100,
                   offset_maximum=None, strength_maximum=None,
                   top_margin_ratio=.3, bottom_margin_ratio=.2,
-                  tick_count=5,
-                  save: bool = True):
+                  tick_count=5):
         as_sorted = sorted(self._vector, key=lambda e: e[0])
         if offset_maximum is None:
             offset_maximum = self.offset_maximum()
@@ -74,10 +73,7 @@ class DiscreteNDD:
         else:
             font = ImageFont.truetype('arial', size=int(height * .3))
             text_with_boarder(draw, (width / 2, height / 2), 'empty dNDD', font=font)
-        if save:
-            image.save(f'{path}.png')
-        else:
-            return image
+        return image
 
     def __str__(self):
         as_sorted: typing.List[typing.Union[typing.Tuple[int, int], typing.Tuple[None, None]]] = sorted(self._vector, key=lambda e: e[0])
