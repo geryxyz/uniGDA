@@ -41,6 +41,28 @@ class DegreeDistribution(dict):
         return image
 
 
+class InspectionReport(object):
+    def __init__(self, ndds: NDDCollection, degrees: DegreeDistribution, graph: GraphTraversal):
+        self.ndds = ndds
+        self.degrees = degrees
+        self.graph = graph
+
+    def visualize(self, xmax: int, ymax: int, max_node_count: int = None, title: str = None, ndd_width: int = 600,
+                  ndd_height: int = 200):
+        if max_node_count is None:
+            max_node_count = self.graph.V().count().next()
+        ndd_image = self.ndds.visualize_collage(max_count=max_node_count, max_kind=max_node_count,
+                                                ndd_width=ndd_width, ndd_height=ndd_height)
+        degree_image = self.degrees.visualize(title=title,
+                                              xmax=xmax, ymax=ymax, width=ndd_image.size[0],
+                                              height=int(ndd_image.size[1] / 3))
+        collage = Image.new('RGBA', (ndd_image.size[0], ndd_image.size[1] + degree_image.size[1]),
+                            color=(255, 255, 255, 255))
+        collage.paste(degree_image, (0, 0))
+        collage.paste(ndd_image, (0, degree_image.size[1]))
+        return collage
+
+
 class GraphInspector(object):
     def __init__(self, graph: GraphTraversal):
         self.graph = graph
@@ -61,26 +83,22 @@ class GraphInspector(object):
             degrees[degree] = degrees.get(degree, 0) + 1
         return degrees
 
+    def generate_report(self, edge_selector: typing.Callable[[Vertex], typing.List[Edge]] = None):
+        return InspectionReport(self.all_ndds_of(), self.degree_distribution(edge_selector), self.graph)
+
 
 if __name__ == "__main__":
     max_node_count = 10
     genrator = EmptyGraph('ws://localhost:8182/gremlin', 'g', max_node_count)
     inspector = GraphInspector(genrator.output_graph)
     max_edge_count = 25
-    features = []
+    reports = []
     for count in range(max_edge_count):
         print(count)
         genrator.add_random_edge(weight=None)
-        features.append((inspector.all_ndds_of(), inspector.degree_distribution()))
-    xmax = max([max(feature[1].keys()) for feature in features])
-    ymax = max([max(feature[1].values()) for feature in features])
-    for index, (ndds, degrees) in enumerate(features):
-        ndd_image = ndds.visualize_collage(max_count=max_node_count, max_kind=max_node_count)
-        degree_image = degrees.visualize(title=f'Degree distribution of {index} edges over {max_node_count} nodes',
-                                         xmax=xmax, ymax=ymax, width=ndd_image.size[0],
-                                         height=int(ndd_image.size[1] / 3))
-        collage = Image.new('RGBA', (ndd_image.size[0], ndd_image.size[1] + degree_image.size[1]),
-                            color=(255, 255, 255, 255))
-        collage.paste(degree_image, (0, 0))
-        collage.paste(ndd_image, (0, degree_image.size[1]))
+        reports.append(inspector.generate_report())
+    xmax = max([max(report.degrees.keys()) for report in reports])
+    ymax = max([max(report.degrees.values()) for report in reports])
+    for index, report in enumerate(reports):
+        collage = report.visualize(xmax, ymax)
         collage.save(f'{index}.png')
