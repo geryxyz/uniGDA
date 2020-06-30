@@ -56,7 +56,12 @@ class ContinuesNDD:
         if edge_selector is None:
             def edge_selector(node): return graph.V(node).bothE().toList()
         if weight_selector is None:
-            def weight_selector(edge): return float(graph.E(edge).properties('weight').value().limit(1).next())
+            def weight_selector(edge):
+                weight = graph.E(edge).properties('weight').value().limit(1).toList()
+                if weight:
+                    return float(weight[0])
+                else:
+                    return 1
         neighbors = neighbor_selector(inspected)
         curve = []
         for neighbor in neighbors:
@@ -93,7 +98,7 @@ class ContinuesNDD:
                   width=900, height=100,
                   offset_maximum=None, strength_maximum=None,
                   top_margin_ratio=.3, bottom_margin_ratio=.2,
-                  tick_count=5):
+                  tick_count=5, right_margin=1):
         if offset_maximum is None:
             offset_maximum = self.offset_maximum()
         if strength_maximum is None:
@@ -103,36 +108,37 @@ class ContinuesNDD:
         step_size = offset_maximum / width
         image = Image.new('RGBA', (width, height), color=(255, 255, 255, 255))
         draw = ImageDraw.Draw(image)
+        corrected_width = width - right_margin
         title_font = ImageFont.truetype('arial', size=int(height * top_margin_ratio * .6))
         if top_margin_ratio > 0 and title is not None:
             text_width, text_height = title_font.getsize(title)
-            draw.text((int(width / 2 - text_width / 2), height * top_margin_ratio - text_height - 2), title,
+            draw.text((int(corrected_width / 2 - text_width / 2), height * top_margin_ratio - text_height - 2), title,
                       fill=(0, 0, 0, 255), font=title_font)
         if self._curve:
             hint_font = ImageFont.truetype('arial', size=int(height * bottom_margin_ratio * .6))
-            for image_x in range(width):
-                x = (image_x / width) * offset_maximum
+            for image_x in range(corrected_width):
+                x = (image_x / corrected_width) * offset_maximum
                 strength = int((1 - self.value(x) / strength_maximum) * 255)
                 draw.line(
                     [(image_x, height * top_margin_ratio), (image_x, height * (1 - bottom_margin_ratio))],
                     fill=(strength, strength, strength, 255))
             last_nearest_gauss = None
-            for image_x in range(width):
-                x = (image_x / width) * offset_maximum
+            for image_x in range(corrected_width):
+                x = (image_x / corrected_width) * offset_maximum
                 nearest_gauss: ModifiedGauss = min(self._curve, key=lambda gauss: abs(gauss.offset - x))
                 if last_nearest_gauss != nearest_gauss and abs(nearest_gauss.offset - x) <= step_size:
                     hint = f'{self.value(nearest_gauss.offset):.4f}'
                     text_width, text_height = hint_font.getsize(hint)
                     draw.line([(image_x, height * top_margin_ratio), (image_x, height * (1 - bottom_margin_ratio))],
                               fill=(255, 0, 0, 255))
-                    if text_width < image_x < width - text_width:
+                    if text_width < image_x < corrected_width - text_width:
                         text_with_boarder(draw, (image_x, height * top_margin_ratio + text_height), hint, hint_font)
                     last_nearest_gauss = nearest_gauss
-            draw_ruler(draw, width, height, bottom_margin_ratio, tick_count, offset_maximum)
+            draw_ruler(draw, corrected_width, height, bottom_margin_ratio, tick_count, offset_maximum)
         else:
             font = ImageFont.truetype('arial', size=int(height * .3))
-            text_with_boarder(draw, (width / 2, height / 2), 'empty cNDD', font=font)
-        draw.rectangle([(0, height * top_margin_ratio), (width - 1, height * (1 - bottom_margin_ratio))],
+            text_with_boarder(draw, (corrected_width / 2, height / 2), 'empty cNDD', font=font)
+        draw.rectangle([(0, height * top_margin_ratio), (corrected_width - 1, height * (1 - bottom_margin_ratio))],
                        outline=(0, 0, 0, 255))
         return image
 

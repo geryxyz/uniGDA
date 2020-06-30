@@ -47,19 +47,28 @@ class InspectionReport(object):
         self.degrees = degrees
         self.graph = graph
 
-    def visualize(self, xmax: int, ymax: int, max_node_count: int = None, title: str = None, ndd_width: int = 600,
+    def visualize(self, xmax: int = None, ymax: int = None, max_node_count: int = None, title: str = None, ndd_width: int = 600,
                   ndd_height: int = 200):
         if max_node_count is None:
             max_node_count = self.graph.V().count().next()
         ndd_image = self.ndds.visualize_collage(max_count=max_node_count, max_kind=max_node_count,
                                                 ndd_width=ndd_width, ndd_height=ndd_height)
-        degree_image = self.degrees.visualize(title=title,
-                                              xmax=xmax, ymax=ymax, width=ndd_image.size[0],
+        degree_image = self.degrees.visualize(xmax=xmax, ymax=ymax, width=ndd_image.size[0],
                                               height=int(ndd_image.size[1] / 3))
-        collage = Image.new('RGBA', (ndd_image.size[0], ndd_image.size[1] + degree_image.size[1]),
+        if title:
+            font = ImageFont.truetype('arial', size=int(degree_image.size[1] * .2))
+            text_width, text_height = font.getsize(title)
+            collage = Image.new('RGBA', (ndd_image.size[0], ndd_image.size[1] + degree_image.size[1] + text_height),
+                                color=(255, 255, 255, 255))
+            draw = ImageDraw.Draw(collage)
+            draw.text((int(ndd_image.size[0] / 2 - text_width / 2), 0), title, fill=(0, 0, 0, 255), font=font)
+            collage.paste(degree_image, (0, text_height))
+            collage.paste(ndd_image, (0, degree_image.size[1] + text_height))
+        else:
+            collage = Image.new('RGBA', (ndd_image.size[0], ndd_image.size[1] + degree_image.size[1]),
                             color=(255, 255, 255, 255))
-        collage.paste(degree_image, (0, 0))
-        collage.paste(ndd_image, (0, degree_image.size[1]))
+            collage.paste(degree_image, (0, 0))
+            collage.paste(ndd_image, (0, degree_image.size[1]))
         return collage
 
 

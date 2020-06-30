@@ -11,6 +11,8 @@ import logging
 import pdb
 import time
 
+from networkx import Graph, DiGraph, MultiGraph, MultiDiGraph
+
 SOURCE_NAME = 'source_name'
 
 ORIGINAL_ID = 'original_id'
@@ -88,6 +90,23 @@ class GremlinUploader(object):
             self.output_graph.V().drop().toList()
             self.output_graph.E().drop().toList()
             logging.warning("done")
+
+    def from_networkx(
+            self,
+            input_graph: typing.Union[Graph, DiGraph, MultiGraph, MultiDiGraph],
+            source_name: str,
+            drop_graph: bool = True,
+            label: str = None):
+        source_label = source_name
+        if label:
+            source_label = label
+        self._drop_if(drop_graph)
+
+        for id, props in input_graph.nodes(data=True):
+            self._add_node(id, props, 'node', source_label).toList()
+
+        for out_id, in_id, props in input_graph.edges(data=True):
+            self._add_edge(out_id, in_id, props, 'edge', source_label, -1).toList()
 
     def from_d3js(
             self,
