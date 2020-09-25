@@ -18,8 +18,8 @@ class EmptyGraph(object):
     def add_random_edge(self, edge_count=1, weight=1):
         for index in range(edge_count):
             if weight is None:
-                _weight = random.random()
-            edge = self.output_graph.addE('random').from_(self.output_graph.V().sample(1)).to(self.output_graph.V().sample(1)).property(WEIGHT, _weight).next()
+                weight = random.random()
+            edge = self.output_graph.addE('random').from_(self.output_graph.V().sample(1)).to(self.output_graph.V().sample(1)).property(WEIGHT, weight).next()
 
 
 if __name__ == '__main__':

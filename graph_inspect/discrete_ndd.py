@@ -1,3 +1,4 @@
+import io
 import typing
 
 from PIL import Image, ImageDraw, ImageFont
@@ -9,7 +10,11 @@ from gremlin_python.structure.graph import Vertex, Edge
 
 import graph_input
 from graph_input.generator import EmptyGraph
-from graph_inspect import draw_ruler, text_with_boarder
+from matplotlib.axes import Axes
+from matplotlib.figure import Figure
+import matplotlib.pyplot as pyplot
+
+from util import set_axes_size
 
 
 class DiscreteNDD:
@@ -43,38 +48,42 @@ class DiscreteNDD:
     def visualize(self,
                   title=None,
                   width=900, height=100,
-                  offset_maximum=None, strength_maximum=None,
-                  top_margin_ratio=.3, bottom_margin_ratio=.2,
-                  tick_count=5, right_margin=1):
+                  offset_maximum=None, strength_maximum=None):
         as_sorted = sorted(self._vector, key=lambda e: e[0])
         if offset_maximum is None:
             offset_maximum = self.offset_maximum()
         if strength_maximum is None:
             strength_maximum = self.strength_maximum()
-        if title is None:
-            top_margin_ratio = 0
-        image = Image.new('RGBA', (width, height), color=(255, 255, 255, 255))
-        draw = ImageDraw.Draw(image)
-        corrected_width = width - right_margin
-        title_font = ImageFont.truetype('arial', size=int(height * top_margin_ratio * .6))
-        if top_margin_ratio > 0 and title is not None:
-            text_width, text_height = title_font.getsize(title)
-            draw.text((int(corrected_width / 2 - text_width / 2), height * top_margin_ratio - text_height - 2), title, fill=(0, 0, 0, 255), font=title_font)
-        hint_font = ImageFont.truetype('arial', size=int(height * bottom_margin_ratio * .6))
-        if self._vector:
-            for entry in as_sorted:
-                offset = (entry[0] / offset_maximum) * corrected_width
-                strength = int((1 - entry[1] / strength_maximum) * 255)
-                draw.line([(offset, height * top_margin_ratio), (offset, height * (1 - bottom_margin_ratio))], fill=(strength, strength, strength, 255))
-                hint = str(entry[1])
-                text_width, text_height = hint_font.getsize(hint)
-                if text_width < offset < corrected_width - text_width:
-                    text_with_boarder(draw, (offset, height * top_margin_ratio + text_height), hint, hint_font)
-            draw_ruler(draw, corrected_width, height, bottom_margin_ratio, tick_count, offset_maximum)
-        else:
-            font = ImageFont.truetype('arial', size=int(height * .3))
-            text_with_boarder(draw, (corrected_width / 2, height / 2), 'empty dNDD', font=font)
+
+        fig: Figure
+        ax: Axes
+        fig, ax = pyplot.subplots()
+
+        fig.set_dpi(100)
+        fig.subplots_adjust(bottom=0.2)
+        set_axes_size(width / 100, height / 100, ax)
+
+        if title:
+            ax.set_title(title)
+        ax.set_xlabel('degree')
+        ax.set_ylabel('count')
+
+        ax.set_xlim(0, offset_maximum + 1)
+        ax.set_ylim(0, strength_maximum + 1)
+        ax.bar(
+            [item[0] for item in as_sorted], [item[1] for item in as_sorted],
+            color='lightgrey', edgecolor='black')
+
+        #fig.show()
+        buffer = io.BytesIO()
+        fig.savefig(buffer, format='png')
+        fig.clf()
+        buffer.seek(0)
+        image = Image.open(buffer)
+        image.load()
+        buffer.close()
         return image
+
 
     def __str__(self):
         as_sorted: typing.List[typing.Union[typing.Tuple[int, int], typing.Tuple[None, None]]] = sorted(self._vector, key=lambda e: e[0])
@@ -102,6 +111,6 @@ if __name__ == '__main__':
     genrator = EmptyGraph('ws://localhost:8182/gremlin', 'g', 5)
     genrator.add_random_edge(50)
     for index, node in enumerate(genrator.output_graph.V().toList()):
-        cndd = DiscreteNDD(node, genrator.output_graph)
-        cndd.visualize(str(index))
+        dndd = DiscreteNDD(node, genrator.output_graph)
+        dndd.visualize().save(f"{index}.png")
     pass
