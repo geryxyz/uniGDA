@@ -19,7 +19,7 @@ if __name__ == '__main__':
             print(f"generate an Erdős-Rényi graph with {vertex_count} vertexes and {edge_probability} for edges")
             graph = networkx.generators.erdos_renyi_graph(vertex_count, edge_probability)
             networkx.write_graphml(graph, f'erdos_renyi_vertex_{vertex_count}_edgeprobability_{edge_probability:.4f}.graphml')
-            uploader.from_networkx(graph, 'complete_graph')
+            uploader.from_networkx(graph, 'graph')
             print("measuring the generated graph")
             reports[(vertex_count, edge_probability)] = inspector.generate_report()
     xmax = max([max(report.degrees.keys()) for report in reports.values()])
