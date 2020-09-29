@@ -1,17 +1,16 @@
 import typing
-from floatrange import floatrange
-from PIL import Image, ImageDraw, ImageFont
-from gremlin_python.driver.driver_remote_connection import DriverRemoteConnection
-from gremlin_python.process import anonymous_traversal
-from gremlin_python.process.graph_traversal import GraphTraversal
-from gremlin_python.structure.graph import Vertex, Edge
-from gremlin_python.process.graph_traversal import __
-import math
 from statistics import stdev
-import logging
 
-import graph_input
-from graph_inspect import draw_ruler, text_with_boarder, EmptyGraph
+import math
+import matplotlib.pyplot as pyplot
+from gremlin_python.process.graph_traversal import GraphTraversal
+from gremlin_python.process.graph_traversal import __
+from gremlin_python.structure.graph import Vertex, Edge
+from matplotlib.axes import Axes
+from matplotlib.figure import Figure
+
+from graph_inspect import EmptyGraph, set_axes_size, NDDVisualization
+import floatrange
 
 
 class ModifiedGauss(object):
@@ -33,7 +32,7 @@ class ModifiedGauss(object):
         return f'g(x, {self.height}, {self.offset}, {self.width})'
 
     def __eq__(self, other):
-        return isinstance(other, ModifiedGauss)\
+        return isinstance(other, ModifiedGauss) \
                and self.height == other.height and self.width == other.width and self.offset == other.offset
 
     def __hash__(self):
@@ -42,6 +41,9 @@ class ModifiedGauss(object):
 
 def sum_of_squares(values: typing.List[float]) -> float:
     return sum([value ** 2 for value in values])
+
+
+RESOLUTION = 1000
 
 
 class ContinuesNDD:
@@ -95,57 +97,52 @@ class ContinuesNDD:
 
     def visualize(self,
                   title=None,
-                  width=900, height=100,
-                  offset_maximum=None, strength_maximum=None,
-                  top_margin_ratio=.3, bottom_margin_ratio=.2,
-                  tick_count=5, right_margin=1):
+                  width=900, height=200,
+                  offset_maximum=None, strength_maximum=None) -> NDDVisualization:
         if offset_maximum is None:
             offset_maximum = self.offset_maximum()
         if strength_maximum is None:
             strength_maximum = self.strength_maximum()
-        if title is None:
-            top_margin_ratio = 0
-        step_size = offset_maximum / width
-        image = Image.new('RGBA', (width, height), color=(255, 255, 255, 255))
-        draw = ImageDraw.Draw(image)
-        corrected_width = width - right_margin
-        title_font = ImageFont.truetype('arial', size=int(height * top_margin_ratio * .6))
-        if top_margin_ratio > 0 and title is not None:
-            text_width, text_height = title_font.getsize(title)
-            draw.text((int(corrected_width / 2 - text_width / 2), height * top_margin_ratio - text_height - 2), title,
-                      fill=(0, 0, 0, 255), font=title_font)
-        if self._curve:
-            hint_font = ImageFont.truetype('arial', size=int(height * bottom_margin_ratio * .6))
-            for image_x in range(corrected_width):
-                x = (image_x / corrected_width) * offset_maximum
-                strength = int((1 - self.value(x) / strength_maximum) * 255)
-                draw.line(
-                    [(image_x, height * top_margin_ratio), (image_x, height * (1 - bottom_margin_ratio))],
-                    fill=(strength, strength, strength, 255))
-            last_nearest_gauss = None
-            for image_x in range(corrected_width):
-                x = (image_x / corrected_width) * offset_maximum
-                nearest_gauss: ModifiedGauss = min(self._curve, key=lambda gauss: abs(gauss.offset - x))
-                if last_nearest_gauss != nearest_gauss and abs(nearest_gauss.offset - x) <= step_size:
-                    hint = f'{self.value(nearest_gauss.offset):.4f}'
-                    text_width, text_height = hint_font.getsize(hint)
-                    draw.line([(image_x, height * top_margin_ratio), (image_x, height * (1 - bottom_margin_ratio))],
-                              fill=(255, 0, 0, 255))
-                    if text_width < image_x < corrected_width - text_width:
-                        text_with_boarder(draw, (image_x, height * top_margin_ratio + text_height), hint, hint_font)
-                    last_nearest_gauss = nearest_gauss
-            draw_ruler(draw, corrected_width, height, bottom_margin_ratio, tick_count, offset_maximum)
-        else:
-            font = ImageFont.truetype('arial', size=int(height * .3))
-            text_with_boarder(draw, (corrected_width / 2, height / 2), 'empty cNDD', font=font)
-        draw.rectangle([(0, height * top_margin_ratio), (corrected_width - 1, height * (1 - bottom_margin_ratio))],
-                       outline=(0, 0, 0, 255))
-        return image
+
+        xs = list(floatrange.floatrange(0, offset_maximum, offset_maximum / RESOLUTION))
+        xs += [g.offset for g in self._curve]
+        xs = sorted(xs)
+        ys = [self.value(x) for x in xs]
+
+        fig: Figure
+        ax: Axes
+        fig, ax = pyplot.subplots()
+
+        fig.set_dpi(100)
+        fig.subplots_adjust(bottom=.2, left=.1, right=.95, top=.95)
+        set_axes_size(width / 100, height / 100, ax)
+
+        if title:
+            ax.set_title(title)
+            fig.subplots_adjust(top=.8)
+        ax.set_xlabel('degree of neighbors (st.dev. of adj.connection)')
+        ax.set_ylabel('strength of connection')
+
+        ax.set_xlim(0, offset_maximum + 1)
+        ax.set_ylim(0, strength_maximum + 1)
+        ax.plot(
+            xs, ys,
+            linestyle='solid', linewidth=1,
+            color='black',
+            zorder=1)
+        peaks = [(g.offset, self.value(g.offset)) for g in self._curve]
+        ax.scatter(
+            [p[0] for p in peaks], [p[1] for p in peaks],
+            marker='^', c='lightgray', edgecolors='black',
+            zorder=2)
+
+        fig.show()
+        return NDDVisualization(fig, ax)
 
     def __str__(self):
         gauss: ModifiedGauss
         return '(' + ', '.join([f'|{gauss.height:.4f}-{gauss.width:.4f}@{gauss.offset:.4f}' for gauss in
-                          sorted(self._curve, key=lambda g: g.offset)]) + ')'
+                                sorted(self._curve, key=lambda g: g.offset)]) + ')'
 
     def is_alike(self, other):
         return isinstance(other, ContinuesNDD) and self._curve == other._curve
@@ -153,8 +150,8 @@ class ContinuesNDD:
 
 if __name__ == '__main__':
     genrator = EmptyGraph('ws://localhost:8182/gremlin', 'g', 5)
-    genrator.add_random_edge(50, weight=None)
+    genrator.add_random_edge(500, weight=None)
     for index, node in enumerate(genrator.output_graph.V().toList()):
         cndd = ContinuesNDD(node, genrator.output_graph)
-        cndd.visualize(str(index))
+        cndd.visualize().image.save(f'cndd_{index}.png')
     pass

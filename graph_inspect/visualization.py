@@ -1,6 +1,7 @@
 import io
 
 from PIL import Image, ImageDraw, ImageFont
+from PIL.PngImagePlugin import PngImageFile
 from floatrange import floatrange
 
 
@@ -42,7 +43,7 @@ class NDDVisualization(object):
         self.axes = axes
 
     @property
-    def image(self):
+    def image(self) -> PngImageFile:
         buffer = io.BytesIO()
         self.figure.savefig(buffer, format='png')
         self.figure.clf()

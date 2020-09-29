@@ -48,7 +48,7 @@ class DiscreteNDD:
     def visualize(self,
                   title=None,
                   width=900, height=200,
-                  offset_maximum=None, strength_maximum=None):
+                  offset_maximum=None, strength_maximum=None) -> NDDVisualization:
         as_sorted = sorted(self._vector, key=lambda e: e[0])
         if offset_maximum is None:
             offset_maximum = self.offset_maximum()
@@ -105,5 +105,5 @@ if __name__ == '__main__':
     genrator.add_random_edge(50)
     for index, node in enumerate(genrator.output_graph.V().toList()):
         dndd = DiscreteNDD(node, genrator.output_graph)
-        dndd.visualize().image.save(f"{index}.png")
+        dndd.visualize().image.save(f"dndd_{index}.png")
     pass
