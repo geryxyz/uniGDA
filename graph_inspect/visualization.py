@@ -1,3 +1,5 @@
+import io
+
 from PIL import Image, ImageDraw, ImageFont
 from floatrange import floatrange
 
@@ -32,3 +34,21 @@ def text_with_boarder(draw: ImageDraw, position, text: str, font: ImageFont, tex
          (position[0] + text_width / 2 + margin, position[1] + text_height / 2 + margin)],
         outline=box_boarder, fill=box_fill)
     draw.text((position[0] - text_width / 2, position[1] - text_height / 2), text, fill=text_fill, font=font)
+
+
+class NDDVisualization(object):
+    def __init__(self, figure, axes):
+        self.figure = figure
+        self.axes = axes
+
+    @property
+    def image(self):
+        buffer = io.BytesIO()
+        self.figure.savefig(buffer, format='png')
+        self.figure.clf()
+        buffer.seek(0)
+        image = Image.open(buffer)
+        image.load()
+        buffer.close()
+        return image
+

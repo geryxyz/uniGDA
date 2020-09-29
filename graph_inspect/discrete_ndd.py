@@ -14,6 +14,7 @@ from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 import matplotlib.pyplot as pyplot
 
+from graph_inspect import NDDVisualization
 from util import set_axes_size
 
 
@@ -40,14 +41,13 @@ class DiscreteNDD:
 
     def strength_maximum(self):
         if self._vector:
-            as_sorted = sorted(self._vector, key=lambda e: e[0])
-            return max(as_sorted, key=lambda e: [1])[1]
+            return max(self._vector, key=lambda e: e[1])[1]
         else:
             return 0
 
     def visualize(self,
                   title=None,
-                  width=900, height=100,
+                  width=900, height=200,
                   offset_maximum=None, strength_maximum=None):
         as_sorted = sorted(self._vector, key=lambda e: e[0])
         if offset_maximum is None:
@@ -60,30 +60,23 @@ class DiscreteNDD:
         fig, ax = pyplot.subplots()
 
         fig.set_dpi(100)
-        fig.subplots_adjust(bottom=0.2)
+        fig.subplots_adjust(bottom=.2, left=.05, right=.95, top=.95)
         set_axes_size(width / 100, height / 100, ax)
 
         if title:
             ax.set_title(title)
-        ax.set_xlabel('degree')
-        ax.set_ylabel('count')
+            fig.subplots_adjust(top=.8)
+        ax.set_xlabel('degree of neighbors')
+        ax.set_ylabel('count of neighbors')
 
         ax.set_xlim(0, offset_maximum + 1)
         ax.set_ylim(0, strength_maximum + 1)
-        ax.bar(
+        ax.plot(
             [item[0] for item in as_sorted], [item[1] for item in as_sorted],
-            color='lightgrey', edgecolor='black')
+            marker='o', linestyle='solid', linewidth=.6,
+            color='black', markerfacecolor='lightgrey')
 
-        #fig.show()
-        buffer = io.BytesIO()
-        fig.savefig(buffer, format='png')
-        fig.clf()
-        buffer.seek(0)
-        image = Image.open(buffer)
-        image.load()
-        buffer.close()
-        return image
-
+        return NDDVisualization(fig, ax)
 
     def __str__(self):
         as_sorted: typing.List[typing.Union[typing.Tuple[int, int], typing.Tuple[None, None]]] = sorted(self._vector, key=lambda e: e[0])
@@ -112,5 +105,5 @@ if __name__ == '__main__':
     genrator.add_random_edge(50)
     for index, node in enumerate(genrator.output_graph.V().toList()):
         dndd = DiscreteNDD(node, genrator.output_graph)
-        dndd.visualize().save(f"{index}.png")
+        dndd.visualize().image.save(f"{index}.png")
     pass
