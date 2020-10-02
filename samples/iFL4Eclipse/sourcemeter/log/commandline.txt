@@ -1,0 +1,6 @@
+..\SourceMeterJava.exe
+-projectName=iFL4Eclipse
+-projectBaseDir=iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl
+-resultsDir=Results
+-FBFileList=fbfilelist.txt
+-runFB=false

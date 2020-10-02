@@ -10,6 +10,7 @@ from gremlin_python.process.graph_traversal import GraphTraversal
 import logging
 import pdb
 import time
+import xml.etree.ElementTree as ET
 
 from networkx import Graph, DiGraph, MultiGraph, MultiDiGraph
 
@@ -240,3 +241,11 @@ class GremlinUploader(object):
                 query=query)
             processed_line_count += 1
         query.toList()
+
+    def from_sm_xml(self, path: str):
+        root: ET.Element = ET.parse(path).getroot()
+        xml_nodes: typing.List[ET.ElementTree] = root.findall('.//node')
+        for node in xml_nodes:
+            name = node.attrib['name']
+            self._add_node(name)
+        pass

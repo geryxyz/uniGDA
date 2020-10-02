@@ -1,0 +1,133 @@
+Number of Clone Classes: 29
+
+0~CloneClass [Number of Clone Instances: 3, Lines of Code: 10]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\MainPart.java(138): 1~CloneInstance [Ln:138, Col:4 - Ln:147, Col:5]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\MainPart.java(162): 2~CloneInstance [Ln:162, Col:4 - Ln:171, Col:5]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\MainPart.java(181): 3~CloneInstance [Ln:181, Col:4 - Ln:190, Col:5]
+
+4~CloneClass [Number of Clone Instances: 2, Lines of Code: 13]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\ScoreListUI.java(503): 5~CloneInstance [Ln:503, Col:3 - Ln:515, Col:6]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\ScoreListUI.java(516): 6~CloneInstance [Ln:516, Col:3 - Ln:531, Col:6]
+
+7~CloneClass [Number of Clone Instances: 2, Lines of Code: 19]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\FilterPart.java(198): 8~CloneInstance [Ln:198, Col:3 - Ln:216, Col:6]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\FilterPart.java(393): 9~CloneInstance [Ln:393, Col:3 - Ln:411, Col:6]
+
+10~CloneClass [Number of Clone Instances: 2, Lines of Code: 15]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\element\ScoreSetter.java(233): 11~CloneInstance [Ln:233, Col:3 - Ln:247, Col:59]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\element\ScoreSetter.java(320): 12~CloneInstance [Ln:320, Col:3 - Ln:339, Col:55]
+
+13~CloneClass [Number of Clone Instances: 3, Lines of Code: 11]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\element\ScoreSetter.java(214): 14~CloneInstance [Ln:214, Col:3 - Ln:224, Col:6]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\element\ScoreSetter.java(233): 15~CloneInstance [Ln:233, Col:3 - Ln:245, Col:6]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\element\ScoreSetter.java(320): 16~CloneInstance [Ln:320, Col:3 - Ln:332, Col:6]
+
+17~CloneClass [Number of Clone Instances: 3, Lines of Code: 19]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\element\CodeElementUI.java(171): 18~CloneInstance [Ln:171, Col:3 - Ln:189, Col:55]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\element\CodeElementUI.java(195): 19~CloneInstance [Ln:195, Col:3 - Ln:213, Col:50]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\element\CodeElementUI.java(219): 20~CloneInstance [Ln:219, Col:3 - Ln:237, Col:57]
+
+21~CloneClass [Number of Clone Instances: 2, Lines of Code: 17]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\FilterPart.java(246): 22~CloneInstance [Ln:246, Col:3 - Ln:262, Col:63]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\FilterPart.java(264): 23~CloneInstance [Ln:264, Col:3 - Ln:280, Col:68]
+
+24~CloneClass [Number of Clone Instances: 3, Lines of Code: 11]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\element\CodeElementUI.java(193): 25~CloneInstance [Ln:193, Col:3 - Ln:203, Col:94]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\element\CodeElementUI.java(217): 26~CloneInstance [Ln:217, Col:3 - Ln:227, Col:92]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\element\CodeElementUI.java(228): 27~CloneInstance [Ln:228, Col:3 - Ln:238, Col:95]
+
+28~CloneClass [Number of Clone Instances: 5, Lines of Code: 10]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\element\CodeElementUI.java(180): 29~CloneInstance [Ln:180, Col:3 - Ln:189, Col:55]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\element\CodeElementUI.java(193): 30~CloneInstance [Ln:193, Col:3 - Ln:202, Col:56]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\element\CodeElementUI.java(204): 31~CloneInstance [Ln:204, Col:3 - Ln:213, Col:50]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\element\CodeElementUI.java(217): 32~CloneInstance [Ln:217, Col:3 - Ln:226, Col:54]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\element\CodeElementUI.java(228): 33~CloneInstance [Ln:228, Col:3 - Ln:237, Col:57]
+
+34~CloneClass [Number of Clone Instances: 2, Lines of Code: 11]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\element\ScoreSetter.java(368): 35~CloneInstance [Ln:368, Col:4 - Ln:378, Col:5]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\element\ScoreSetter.java(404): 36~CloneInstance [Ln:404, Col:4 - Ln:414, Col:5]
+
+37~CloneClass [Number of Clone Instances: 5, Lines of Code: 10]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\ScoreListUI.java(506): 38~CloneInstance [Ln:506, Col:3 - Ln:515, Col:6]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\ScoreListUI.java(519): 39~CloneInstance [Ln:519, Col:3 - Ln:531, Col:6]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\FilterPart.java(232): 40~CloneInstance [Ln:232, Col:3 - Ln:243, Col:6]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\FilterPart.java(249): 41~CloneInstance [Ln:249, Col:3 - Ln:260, Col:6]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\FilterPart.java(267): 42~CloneInstance [Ln:267, Col:3 - Ln:278, Col:6]
+
+43~CloneClass [Number of Clone Instances: 2, Lines of Code: 17]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\FilterPart.java(230): 44~CloneInstance [Ln:230, Col:3 - Ln:246, Col:41]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\FilterPart.java(247): 45~CloneInstance [Ln:247, Col:3 - Ln:263, Col:43]
+
+46~CloneClass [Number of Clone Instances: 3, Lines of Code: 16]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\FilterPart.java(230): 47~CloneInstance [Ln:230, Col:3 - Ln:245, Col:62]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\FilterPart.java(247): 48~CloneInstance [Ln:247, Col:3 - Ln:262, Col:63]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\FilterPart.java(265): 49~CloneInstance [Ln:265, Col:3 - Ln:280, Col:68]
+
+50~CloneClass [Number of Clone Instances: 2, Lines of Code: 22]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\FilterPart.java(305): 51~CloneInstance [Ln:305, Col:5 - Ln:327, Col:59]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\FilterPart.java(417): 52~CloneInstance [Ln:417, Col:3 - Ln:438, Col:70]
+
+53~CloneClass [Number of Clone Instances: 2, Lines of Code: 10]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\model\source\MethodIdentity.java(55): 54~CloneInstance [Ln:55, Col:3 - Ln:64, Col:17]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\model\source\MethodIdentity.java(65): 55~CloneInstance [Ln:65, Col:3 - Ln:74, Col:17]
+
+56~CloneClass [Number of Clone Instances: 2, Lines of Code: 16]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\control\score\ScoreListControl.java(189): 57~CloneInstance [Ln:189, Col:4 - Ln:204, Col:11]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\control\score\ScoreListControl.java(205): 58~CloneInstance [Ln:205, Col:4 - Ln:220, Col:11]
+
+59~CloneClass [Number of Clone Instances: 3, Lines of Code: 12]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\control\score\ScoreListControl.java(189): 60~CloneInstance [Ln:189, Col:4 - Ln:200, Col:11]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\control\score\ScoreListControl.java(201): 61~CloneInstance [Ln:201, Col:4 - Ln:212, Col:11]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\control\score\ScoreListControl.java(213): 62~CloneInstance [Ln:213, Col:4 - Ln:224, Col:11]
+
+63~CloneClass [Number of Clone Instances: 2, Lines of Code: 11]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\element\ScoreSetter.java(168): 64~CloneInstance [Ln:168, Col:4 - Ln:178, Col:5]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\element\ScoreSetter.java(408): 65~CloneInstance [Ln:408, Col:4 - Ln:419, Col:5]
+
+66~CloneClass [Number of Clone Instances: 2, Lines of Code: 12]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\wb\swt\SWTResourceManager.java(284): 67~CloneInstance [Ln:284, Col:3 - Ln:295, Col:4]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\wb\swt\ResourceManager.java(183): 68~CloneInstance [Ln:183, Col:3 - Ln:194, Col:4]
+
+69~CloneClass [Number of Clone Instances: 2, Lines of Code: 18]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\control\score\ScoreListControl.java(112): 70~CloneInstance [Ln:112, Col:3 - Ln:129, Col:16]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\control\score\ScoreListControl.java(141): 71~CloneInstance [Ln:141, Col:3 - Ln:158, Col:20]
+
+72~CloneClass [Number of Clone Instances: 2, Lines of Code: 11]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\wb\swt\ResourceManager.java(234): 73~CloneInstance [Ln:234, Col:16 - Ln:244, Col:3]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\wb\swt\ResourceManager.java(254): 74~CloneInstance [Ln:254, Col:16 - Ln:264, Col:3]
+
+75~CloneClass [Number of Clone Instances: 2, Lines of Code: 18]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\MainPart.java(131): 76~CloneInstance [Ln:131, Col:3 - Ln:148, Col:5]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\MainPart.java(174): 77~CloneInstance [Ln:174, Col:3 - Ln:191, Col:5]
+
+78~CloneClass [Number of Clone Instances: 4, Lines of Code: 12]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\view\FilterView.java(47): 79~CloneInstance [Ln:47, Col:2 - Ln:60, Col:3]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\view\FilterView.java(62): 80~CloneInstance [Ln:62, Col:2 - Ln:75, Col:3]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\view\ScoreListView.java(52): 81~CloneInstance [Ln:52, Col:2 - Ln:63, Col:3]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\view\ScoreListView.java(65): 82~CloneInstance [Ln:65, Col:2 - Ln:76, Col:3]
+
+83~CloneClass [Number of Clone Instances: 2, Lines of Code: 16]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\model\source\Method.java(63): 84~CloneInstance [Ln:63, Col:2 - Ln:78, Col:3]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\model\user\interaction\Option.java(65): 85~CloneInstance [Ln:65, Col:2 - Ln:80, Col:3]
+
+86~CloneClass [Number of Clone Instances: 3, Lines of Code: 12]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\model\source\Method.java(65): 87~CloneInstance [Ln:65, Col:3 - Ln:76, Col:17]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\model\user\interaction\Option.java(67): 88~CloneInstance [Ln:67, Col:3 - Ln:78, Col:17]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\model\source\MethodIdentity.java(48): 89~CloneInstance [Ln:48, Col:3 - Ln:59, Col:17]
+
+90~CloneClass [Number of Clone Instances: 2, Lines of Code: 10]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\element\CodeElementUI.java(48): 91~CloneInstance [Ln:48, Col:2 - Ln:57, Col:3]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\element\CodeElementUI.java(59): 92~CloneInstance [Ln:59, Col:2 - Ln:68, Col:3]
+
+93~CloneClass [Number of Clone Instances: 2, Lines of Code: 10]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\view\FilterView.java(77): 94~CloneInstance [Ln:77, Col:2 - Ln:86, Col:3]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\view\FilterView.java(88): 95~CloneInstance [Ln:88, Col:2 - Ln:97, Col:3]
+
+96~CloneClass [Number of Clone Instances: 2, Lines of Code: 11]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\element\CodeElementUI.java(308): 97~CloneInstance [Ln:308, Col:3 - Ln:318, Col:6]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\sed\ifl\ide\gui\element\SelectedElementUI.java(155): 98~CloneInstance [Ln:155, Col:3 - Ln:165, Col:6]
+
+99~CloneClass [Number of Clone Instances: 2, Lines of Code: 15]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\wb\swt\SWTResourceManager.java(234): 100~CloneInstance [Ln:234, Col:3 - Ln:248, Col:46]
+H:\project\clone class classification\SourceMeter-9.2.0-x64-Windows\Java\Demo\iFL4Eclipse\org.eclipse.sed.ifl.root\bundles\org.eclipse.sed.ifl\src\org\eclipse\wb\swt\ResourceManager.java(126): 101~CloneInstance [Ln:126, Col:3 - Ln:140, Col:46]
+

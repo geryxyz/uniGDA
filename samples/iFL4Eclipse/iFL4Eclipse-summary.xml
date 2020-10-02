@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<graph>
+  <header>
+    <info name = "RTEHunter-mode" value = "inactive"/>
+    <info name = "FaultHunter-mode" value = "inactive"/>
+    <info name = "AndroidHunter-mode" value = "inactive"/>
+    <info name = "DuplicatedCodeFinder-mode" value = "full"/>
+    <info name = "asg" value = "java"/>
+    <info name = "LIM2Metrics-mode" value = "full"/>
+    <info name = "PMD2Graph-mode" value = "full"/>
+  </header>
+  <data>
+    <node name = "L102" type = "Component">
+      <attribute type = "string" name = "Name" context = "attribute" value = "&lt;System&gt;"/>
+      <attribute type = "string" name = "LongName" context = "attribute" value = "&lt;System&gt;"/>
+      <attribute type = "string" name = "ChangesetID" context = "attribute" value = ""/>
+      <attribute type = "string" name = "AnalysisTime" context = "attribute" value = "now"/>
+      <attribute type = "int" name = "CI" context = "metric" value = "73"/>
+      <attribute type = "int" name = "CCO" context = "metric" value = "156"/>
+      <attribute type = "int" name = "CCL" context = "metric" value = "29"/>
+      <attribute type = "float" name = "CC" context = "metric" value = "0.0761722"/>
+      <attribute type = "float" name = "CLLC" context = "metric" value = "0.0739762"/>
+      <attribute type = "int" name = "LLDC" context = "metric" value = "560"/>
+      <attribute type = "int" name = "LDC" context = "metric" value = "676"/>
+      <attribute type = "float" name = "CLC" context = "metric" value = "0.064813"/>
+      <attribute type = "float" name = "NCR" context = "metric" value = "0.154278"/>
+      <attribute type = "float" name = "CR" context = "metric" value = "0.147977"/>
+      <attribute type = "float" name = "CEE" context = "metric" value = "464.667"/>
+      <attribute type = "float" name = "CEG" context = "metric" value = "2.40906"/>
+      <attribute type = "int" name = "PMD_UDO" context = "metric" value = "29"/>
+      <attribute type = "int" name = "PMD_FDSBASOC" context = "metric" value = "302"/>
+      <attribute type = "int" name = "PMD_UEC" context = "metric" value = "4"/>
+      <attribute type = "int" name = "PMD_IF" context = "metric" value = "219"/>
+      <attribute type = "int" name = "PMD_GN" context = "metric" value = "21"/>
+      <attribute type = "int" name = "PMD_UnI" context = "metric" value = "8"/>
+      <attribute type = "int" name = "PMD_SF" context = "metric" value = "20"/>
+      <attribute type = "int" name = "PMD_RFI" context = "metric" value = "5"/>
+      <attribute type = "int" name = "PMD_SP" context = "metric" value = "44"/>
+      <attribute type = "int" name = "PMD_CSB" context = "metric" value = "27"/>
+      <attribute type = "int" name = "PMD_PLFIC" context = "metric" value = "7"/>
+      <attribute type = "int" name = "PMD_UEM" context = "metric" value = "38"/>
+      <attribute type = "int" name = "PMD_SSSHD" context = "metric" value = "2"/>
+      <attribute type = "int" name = "PMD_TFBFASS" context = "metric" value = "1"/>
+      <attribute type = "int" name = "PMD_UETCS" context = "metric" value = "1"/>
+      <attribute type = "int" name = "PMD_DP" context = "metric" value = "27"/>
+      <attribute type = "int" name = "PMD_ACGE" context = "metric" value = "10"/>
+      <attribute type = "int" name = "PMD_ESNIL" context = "metric" value = "2"/>
+      <attribute type = "int" name = "PMD_BI" context = "metric" value = "1"/>
+      <attribute type = "int" name = "PMD_UPF" context = "metric" value = "1"/>
+      <attribute type = "int" name = "PMD_APST" context = "metric" value = "7"/>
+      <attribute type = "int" name = "PMD_AFS" context = "metric" value = "3"/>
+      <attribute type = "int" name = "PMD_UC" context = "metric" value = "3"/>
+      <attribute type = "int" name = "PMD_UOM" context = "metric" value = "2"/>
+      <attribute type = "int" name = "PMD_SBR" context = "metric" value = "1"/>
+      <attribute type = "int" name = "PMD_LoC" context = "metric" value = "3"/>
+      <attribute type = "int" name = "PMD_ATRET" context = "metric" value = "5"/>
+      <attribute type = "int" name = "PMD_ULBR" context = "metric" value = "4"/>
+      <attribute type = "int" name = "PMD_ECB" context = "metric" value = "11"/>
+      <attribute type = "int" name = "PMD_EIS" context = "metric" value = "1"/>
+      <attribute type = "int" name = "PMD_SiDTE" context = "metric" value = "3"/>
+      <attribute type = "int" name = "PMD_DC" context = "metric" value = "6"/>
+      <attribute type = "int" name = "PMD_ADL" context = "metric" value = "5"/>
+      <attribute type = "int" name = "PMD_USF" context = "metric" value = "20"/>
+      <attribute type = "int" name = "PMD_UUINL" context = "metric" value = "1"/>
+      <attribute type = "int" name = "PMD_UWOC" context = "metric" value = "1"/>
+      <attribute type = "int" name = "PMD_CIS" context = "metric" value = "1"/>
+      <attribute type = "int" name = "PMD_ICB" context = "metric" value = "1"/>
+      <attribute type = "int" name = "PMD_ULV" context = "metric" value = "1"/>
+      <attribute type = "int" name = "PMD_SBE" context = "metric" value = "1"/>
+      <attribute type = "int" name = "PMD_EMIACSBA" context = "metric" value = "4"/>
+      <attribute type = "int" name = "PMD_FLCBF" context = "metric" value = "5"/>
+      <attribute type = "int" name = "PMD_CWOPCSBF" context = "metric" value = "1"/>
+      <attribute type = "int" name = "PMD_SCN" context = "metric" value = "7"/>
+      <attribute type = "int" name = "PMD_NSI" context = "metric" value = "1"/>
+      <attribute type = "int" name = "PMD_UnM" context = "metric" value = "17"/>
+      <attribute type = "int" name = "PMD_AFNMMN" context = "metric" value = "2"/>
+      <attribute type = "int" name = "PMD_CCOM" context = "metric" value = "3"/>
+      <attribute type = "int" name = "PMD_ACT" context = "metric" value = "9"/>
+      <attribute type = "int" name = "PMD_UTWR" context = "metric" value = "2"/>
+      <attribute type = "int" name = "Code Style Rules" context = "metricgroup" value = "443"/>
+      <attribute type = "int" name = "Documentation Rules" context = "metricgroup" value = "42"/>
+      <attribute type = "int" name = "Design Rules" context = "metricgroup" value = "269"/>
+      <attribute type = "int" name = "Best Practice Rules" context = "metricgroup" value = "80"/>
+      <attribute type = "int" name = "Performance Rules" context = "metricgroup" value = "11"/>
+      <attribute type = "int" name = "Error Prone Rules" context = "metricgroup" value = "35"/>
+      <attribute type = "int" name = "Multithreading Rules" context = "metricgroup" value = "20"/>
+      <attribute type = "int" name = "TLLOC" context = "metric" value = "7570"/>
+      <attribute type = "int" name = "TLOC" context = "metric" value = "10430"/>
+      <attribute type = "float" name = "TAD" context = "metric" value = "0.0665779"/>
+      <attribute type = "int" name = "TNA" context = "metric" value = "516"/>
+      <attribute type = "int" name = "TNCL" context = "metric" value = "185"/>
+      <attribute type = "int" name = "TNEN" context = "metric" value = "7"/>
+      <attribute type = "int" name = "TNFI" context = "metric" value = "138"/>
+      <attribute type = "int" name = "TNG" context = "metric" value = "171"/>
+      <attribute type = "int" name = "TNIN" context = "metric" value = "21"/>
+      <attribute type = "int" name = "TNM" context = "metric" value = "847"/>
+      <attribute type = "int" name = "TNOS" context = "metric" value = "3019"/>
+      <attribute type = "int" name = "TNPA" context = "metric" value = "46"/>
+      <attribute type = "int" name = "TNPCL" context = "metric" value = "121"/>
+      <attribute type = "int" name = "TNPEN" context = "metric" value = "7"/>
+      <attribute type = "int" name = "TNPIN" context = "metric" value = "21"/>
+      <attribute type = "int" name = "TNPKG" context = "metric" value = "48"/>
+      <attribute type = "int" name = "TNPM" context = "metric" value = "724"/>
+      <attribute type = "int" name = "TNS" context = "metric" value = "74"/>
+      <attribute type = "int" name = "TPDA" context = "metric" value = "50"/>
+      <attribute type = "int" name = "TPUA" context = "metric" value = "701"/>
+      <attribute type = "int" name = "TCLOC" context = "metric" value = "666"/>
+      <attribute type = "int" name = "TNDI" context = "metric" value = "59"/>
+      <attribute type = "float" name = "TCD" context = "metric" value = "0.0808645"/>
+      <attribute type = "int" name = "WarningBlocker" context = "metric" value = "0"/>
+      <attribute type = "int" name = "WarningCritical" context = "metric" value = "26"/>
+      <attribute type = "int" name = "WarningMajor" context = "metric" value = "116"/>
+      <attribute type = "int" name = "WarningMinor" context = "metric" value = "758"/>
+      <attribute type = "int" name = "WarningInfo" context = "metric" value = "0"/>
+    </node>
+  </data>
+</graph>
