@@ -242,10 +242,23 @@ class GremlinUploader(object):
             processed_line_count += 1
         query.toList()
 
+    @staticmethod
+    def _collect_sm_attributes(node: ET.ElementTree):
+        attribute: ET.Element
+        for attribute in node.findall("./attribute"):
+            _type = attribute.attrib['type']
+            if _type == 'string':
+                yield attribute.attrib['name'], attribute.attrib['value']
+            elif _type == 'int':
+                yield attribute.attrib['name'], int(attribute.attrib['value'])
+            elif _type == 'float':
+                yield attribute.attrib['name'], float(attribute.attrib['value'])
+
     def from_sm_xml(self, path: str):
         root: ET.Element = ET.parse(path).getroot()
-        xml_nodes: typing.List[ET.ElementTree] = root.findall('.//node')
+        xml_nodes: typing.List[ET.Element] = root.findall('.//node')
         for node in xml_nodes:
-            name = node.attrib['name']
-            self._add_node(name)
+            id = node.attrib['name']
+            attributes = {name: value for name, value in GremlinUploader._collect_sm_attributes(node)}
+            self._add_node(id, attributes, attributes.get('Name', id), path)
         pass
