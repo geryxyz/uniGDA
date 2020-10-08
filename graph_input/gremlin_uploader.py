@@ -75,7 +75,7 @@ class GremlinUploader(object):
         self._added_node_ids.append(original_id)
         query = query.property(ORIGINAL_ID, original_id).property(SOURCE_NAME, source_label)
         for prop, value in props.items():
-            query = query.property(prop, value).toList()
+            query = query.property(prop, value)
         return query
 
     def _load_graph(self, json_graph):
@@ -254,11 +254,16 @@ class GremlinUploader(object):
             elif _type == 'float':
                 yield attribute.attrib['name'], float(attribute.attrib['value'])
 
-    def from_sm_xml(self, path: str):
+    def from_sm_xml(
+            self,
+            path: str,
+            drop_graph: bool = True):
+        self._drop_if(drop_graph)
         root: ET.Element = ET.parse(path).getroot()
         xml_nodes: typing.List[ET.Element] = root.findall('.//node')
         for node in xml_nodes:
             id = node.attrib['name']
+            _type = node.attrib['type']
             attributes = {name: value for name, value in GremlinUploader._collect_sm_attributes(node)}
-            self._add_node(id, attributes, attributes.get('Name', id), path)
+            self._add_node(id, attributes, _type, path).toList()
         pass
